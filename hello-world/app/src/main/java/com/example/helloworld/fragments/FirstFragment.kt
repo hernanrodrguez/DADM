@@ -16,27 +16,44 @@ import com.google.android.material.snackbar.Snackbar
 
 class FirstFragment : Fragment() {
 
-    lateinit var v : View
-    lateinit var btnNavigate : Button
-    lateinit var editTextUsername : EditText
-    lateinit var editTextPassword : EditText
-    lateinit var snackbar: Snackbar
+    private lateinit var v : View
+    private lateinit var btnNavigate : Button
+    private lateinit var editTextUsername : EditText
+    private lateinit var editTextPassword : EditText
+    private lateinit var snackbar : Snackbar
 
-    var user1 : User = User(name = "juan", password = "pass")
-    var user2 : User = User(name = "pedro", password = "1234")
-    var user3 : User = User(name = "simon", password = "clave")
-    var user4 : User = User(name = "jose", password = "jjjj")
+    private lateinit var currentUser : User
 
-    var userList : MutableList<User> = mutableListOf()
+    private var user1 : User = User(name = "juan", password = "pass")
+    private var user2 : User = User(name = "pedro", password = "1234")
+    private var user3 : User = User(name = "simon", password = "clave")
+    private var user4 : User = User(name = "jose", password = "jjjj")
+
+    private var userList : MutableList<User> = mutableListOf()
+
+    private companion object{
+        const val ERROR = -1
+        const val NO_USERNAME = 0
+        const val NO_PASSWORD = 1
+        const val NO_REGISTER = 2
+        const val WRONG_PASSWORD = 3
+        const val LOGIN_OK = 4
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_first, container, false)
+
         btnNavigate = v.findViewById(R.id.btnNavigate)
         editTextUsername = v.findViewById(R.id.editTextUsername)
         editTextPassword = v.findViewById(R.id.editTextPassword)
+
+        userList.add(user1)
+        userList.add(user2)
+        userList.add(user3)
+        userList.add(user4)
 
         return v
     }
@@ -44,35 +61,57 @@ class FirstFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        userList.add(user1)
-        userList.add(user2)
-        userList.add(user3)
-        userList.add(user4)
+        btnNavigate.setOnClickListener{
 
-        btnNavigate.setOnClickListener{ it ->
-
-            if(editTextUsername.text.isEmpty()){
-                snackbar = Snackbar.make(it,"Ingrese username",Snackbar.LENGTH_LONG)
-                snackbar.show()
-            } else if(editTextPassword.text.isEmpty()){
-                snackbar = Snackbar.make(it,"Ingrese password",Snackbar.LENGTH_LONG)
-                snackbar.show()
-            } else if(!userList.any { user -> user.name == editTextUsername.text.toString()}) {
-                snackbar = Snackbar.make(it,"Usuario no registrado",Snackbar.LENGTH_LONG)
-                snackbar.show()
-            } else {
-                val currentUser = userList.firstOrNull{it.name == editTextUsername.text.toString()}
-                if (currentUser != null) {
-                    if (currentUser.getPassword() == editTextPassword.text.toString()){
-                        val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentUser)
-                        findNavController().navigate(action)
-                    } else {
-                        snackbar = Snackbar.make(it,"Clave incorrecta",Snackbar.LENGTH_LONG)
-                        snackbar.show()
-                    }
+            when(checkCredentials(userList, editTextUsername.text.toString(), editTextPassword.text.toString())){
+                NO_USERNAME -> {
+                    showSnackbar("Ingrese username")
+                }
+                NO_PASSWORD -> {
+                    showSnackbar("Ingrese password")
+                }
+                NO_REGISTER -> {
+                    showSnackbar("Usuario no registrado")
+                }
+                WRONG_PASSWORD -> {
+                    showSnackbar("Clave incorrecta")
+                }
+                LOGIN_OK -> {
+                    val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentUser)
+                    findNavController().navigate(action)
+                }
+                ERROR -> {
+                    showSnackbar("There was a problem!")
                 }
             }
         }
     }
 
+    private fun showSnackbar(msg : String){
+        snackbar = Snackbar.make(v, msg,Snackbar.LENGTH_LONG)
+        snackbar.show()
+    }
+
+    private fun checkCredentials(list : MutableList<User>, username : String, password : String) : Int {
+        if(username.isEmpty()){
+            return NO_USERNAME
+        }
+        if(password.isEmpty()){
+            return NO_PASSWORD
+        }
+        if(!list.any { user -> user.name == username }){
+            return NO_REGISTER
+        } else {
+            val userExists = list.firstOrNull{ it.name == username }
+            if(userExists != null){
+                currentUser = userExists
+                return if (currentUser.getPassword() == password){
+                    LOGIN_OK
+                } else {
+                    WRONG_PASSWORD
+                }
+            }
+        }
+        return ERROR
+    }
 }
