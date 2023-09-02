@@ -16,8 +16,4 @@ class User (
     fun getPassword() : String{
         return this.password
     }
-    companion object{ // se usa para datos estaticos que puedo accederlos sin tener que instanciar un objeto
-        const val Tag = "USER"
-    }
-
 }

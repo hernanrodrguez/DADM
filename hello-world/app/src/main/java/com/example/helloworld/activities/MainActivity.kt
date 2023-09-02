@@ -1,11 +1,8 @@
-package com.example.helloworld
+package com.example.helloworld.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import com.example.helloworld.entities.User
+import com.example.helloworld.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

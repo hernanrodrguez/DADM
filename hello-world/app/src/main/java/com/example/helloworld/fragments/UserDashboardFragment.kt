@@ -1,8 +1,6 @@
 package com.example.helloworld.fragments
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +12,7 @@ import com.example.helloworld.R
 import com.example.helloworld.entities.User
 import com.google.android.material.snackbar.Snackbar
 
-class FirstFragment : Fragment() {
+class UserDashboardFragment : Fragment() {
 
     private lateinit var v : View
     private lateinit var btnNavigate : Button
@@ -44,7 +42,7 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        v = inflater.inflate(R.layout.fragment_first, container, false)
+        v = inflater.inflate(R.layout.fragment_user_dashboard, container, false)
 
         btnNavigate = v.findViewById(R.id.btnNavigate)
         editTextUsername = v.findViewById(R.id.editTextUsername)
@@ -77,7 +75,7 @@ class FirstFragment : Fragment() {
                     showSnackbar("Clave incorrecta")
                 }
                 LOGIN_OK -> {
-                    val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentUser)
+                    val action = UserDashboardFragmentDirections.actionUserDashboardFragmentToUserDetailFragment(currentUser)
                     findNavController().navigate(action)
                 }
                 ERROR -> {

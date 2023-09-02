@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navgraph"
-    app:startDestination="@id/firstFragment">
+    app:startDestination="@id/userDashboardFragment">
 
     <fragment
-        android:id="@+id/firstFragment"
-        android:name="com.example.helloworld.fragments.FirstFragment"
+        android:id="@+id/userDashboardFragment"
+        android:name="com.example.helloworld.fragments.UserDashboardFragment"
         android:label="fragment_first"
-        tools:layout="@layout/fragment_first" >
+        tools:layout="@layout/fragment_user_dashboard" >
         <action
-            android:id="@+id/action_firstFragment_to_secondFragment"
-            app:destination="@id/secondFragment" />
+            android:id="@+id/action_userDashboardFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.example.helloworld.fragments.SecondFragment"
+        android:id="@+id/userDetailFragment"
+        android:name="com.example.helloworld.fragments.UserDetailFragment"
         android:label="fragment_second"
-        tools:layout="@layout/fragment_second" >
+        tools:layout="@layout/fragment_user_details" >
         <argument
             android:name="user"
             app:argType="com.example.helloworld.entities.User" />
