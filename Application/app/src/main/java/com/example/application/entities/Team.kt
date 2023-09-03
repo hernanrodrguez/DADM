@@ -11,6 +11,8 @@ class Team (
     var foundationYear: Int,
     var stadiumName: String,
     var stadiumCapacity: Int,
-    var urlAvatar: String
+    var urlAvatar: String,
+    var nationalCups: Int,
+    var location: String
 ) : Parcelable {
 }
