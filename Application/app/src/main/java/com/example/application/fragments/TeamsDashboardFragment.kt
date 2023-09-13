@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 class TeamsDashboardFragment : Fragment() {
 
     private lateinit var v : View
-    private lateinit var arg : User
     private lateinit var recTeams : RecyclerView
     private lateinit var adapter : TeamAdapter
     private lateinit var snackbar : Snackbar
@@ -40,7 +39,6 @@ class TeamsDashboardFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        arg = TeamsDashboardFragmentArgs.fromBundle(requireArguments()).user
         adapter = TeamAdapter(teamsRepository.teams) {
             val action =
                 TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamDetailFragment(

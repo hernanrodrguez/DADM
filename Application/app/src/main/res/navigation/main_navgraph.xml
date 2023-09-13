@@ -3,17 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navgraph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/teamsDashboardFragment">
 
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.application.fragments.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_teamsDashboardFragment"
-            app:destination="@id/teamsDashboardFragment" />
-    </fragment>
     <fragment
         android:id="@+id/teamsDashboardFragment"
         android:name="com.example.application.fragments.TeamsDashboardFragment"
@@ -22,9 +13,6 @@
         <action
             android:id="@+id/action_teamsDashboardFragment_to_teamDetailFragment"
             app:destination="@id/teamDetailFragment" />
-        <argument
-            android:name="user"
-            app:argType="com.example.application.entities.User" />
     </fragment>
     <fragment
         android:id="@+id/teamDetailFragment"
@@ -35,4 +23,9 @@
             android:name="team"
             app:argType="com.example.application.entities.Team" />
     </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.example.application.fragments.UserDetailFragment"
+        android:label="fragment_user_detail"
+        tools:layout="@layout/fragment_user_detail" />
 </navigation>

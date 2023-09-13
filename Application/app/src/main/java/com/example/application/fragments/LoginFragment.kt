@@ -72,8 +72,7 @@ class LoginFragment : Fragment() {
                 showSnackbar("Wrong password")
             }
             LOGIN_OK -> {
-                val action = LoginFragmentDirections.actionLoginFragmentToTeamsDashboardFragment(currentUser)
-                findNavController().navigate(action)
+                showSnackbar("Login OK!")
             }
             ERROR -> {
                 showSnackbar("There was a problem!")
