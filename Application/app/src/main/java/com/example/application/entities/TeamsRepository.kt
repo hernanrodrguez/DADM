@@ -3,7 +3,8 @@ package com.example.application.entities
 class TeamsRepository {
     var teams : MutableList<Team> = mutableListOf()
     init {
-        teams.add(Team("River Plate", 38, 12, 1901, "Mas Monumental", 84567, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Escudo_del_C_A_River_Plate.svg/194px-Escudo_del_C_A_River_Plate.svg.png", 14, "Buenos Aires"))
+
+        /*teams.add(Team("River Plate", 38, 12, 1901, "Mas Monumental", 84567, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Escudo_del_C_A_River_Plate.svg/194px-Escudo_del_C_A_River_Plate.svg.png", 14, "Buenos Aires"))
         teams.add(Team("Boca Juniors", 35, 18, 1905, "La Bombonera", 49000, "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/CABJ70.png/207px-CABJ70.png", 17, "Buenos Aires"))
         teams.add(Team("Independiente", 16, 18, 1905, "Libertadores de America", 44220, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Escudo_del_Club_Atl%C3%A9tico_Independiente.svg/228px-Escudo_del_Club_Atl%C3%A9tico_Independiente.svg.png", 9, "Avellaneda"))
         teams.add(Team("Racing", 18, 3, 1903, "Cilindro de Avellaneda", 51389, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Escudo_de_Racing_Club_%282014%29.svg/198px-Escudo_de_Racing_Club_%282014%29.svg.png", 15, "Avellaneda"))
@@ -22,5 +23,7 @@ class TeamsRepository {
         teams.add(Team("Godoy Cruz", 0, 0, 1921, "Malvinas Argentinas", 45268, "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/GCAT.png/225px-GCAT.png", 0, "Mendoza"))
         teams.add(Team("Huracan", 5, 0, 1908, "Palacio Duco", 48314, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Emblema_oficial_del_Club_Atl%C3%A9tico_Hurac%C3%A1n.svg/148px-Emblema_oficial_del_Club_Atl%C3%A9tico_Hurac%C3%A1n.svg.png", 8, "Buenos Aires"))
         teams.add(Team("Instituto", 0, 0, 1918, "Juan Peron", 32535, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Escudo_Instituto_Atletico_Central_Cordoba.png/236px-Escudo_Instituto_Atletico_Central_Cordoba.png", 0, "Cordoba"))
+
+         */
     }
 }

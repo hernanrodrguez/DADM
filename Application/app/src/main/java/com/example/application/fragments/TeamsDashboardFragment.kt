@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.application.R
 import com.example.application.adapters.TeamAdapter
+import com.example.application.database.AppDatabase
+import com.example.application.database.TeamDao
 import com.example.application.entities.Team
 import com.example.application.entities.TeamsRepository
 import com.example.application.entities.User
@@ -25,7 +27,10 @@ class TeamsDashboardFragment : Fragment() {
     private lateinit var snackbar : Snackbar
     lateinit var fab: FloatingActionButton
 
-    private var teamsRepository : TeamsRepository = TeamsRepository()
+    private var db: AppDatabase? = null
+    private var teamDao: TeamDao? = null
+
+    //private var teamsRepository : TeamsRepository = TeamsRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,10 +51,17 @@ class TeamsDashboardFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        adapter = TeamAdapter(teamsRepository.teams) {
+        db = AppDatabase.getInstance(v.context)
+        teamDao = db?.teamDao()
+
+        teamDao?.fetchAllTeams()
+
+        val teamList : MutableList<Team> = teamDao?.fetchAllTeams().orEmpty().filterNotNull().toMutableList()
+
+        adapter = TeamAdapter(teamList) {
             val action =
                 TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamDetailFragment(
-                    teamsRepository.teams[it]
+                    teamList[it]
                 )
             findNavController().navigate(action)
         }
