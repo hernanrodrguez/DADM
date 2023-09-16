@@ -1,5 +1,6 @@
 package com.example.application.fragments
 
+import android.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -89,35 +90,59 @@ class TeamAddFragment : Fragment() {
                 NO_URL -> showSnackbar("Ingrese URL al escudo")
                 OK -> {
                     if(arg != null){
-                        arg!!.name = etTeamName.text.toString()
-                        arg!!.nationalTitles = etNationalTitles.text.toString().toInt()
-                        arg!!.internationalTitles = etInternationalTitles.text.toString().toInt()
-                        arg!!.nationalCups = etNationalCups.text.toString().toInt()
-                        arg!!.foundationYear = etYear.text.toString().toInt()
-                        arg!!.stadiumName = etStadium.text.toString()
-                        arg!!.stadiumCapacity = etStadiumCapacity.text.toString().toInt()
-                        arg!!.urlAvatar = etURL.text.toString()
-                        arg!!.location = etLocation.text.toString()
 
-                        teamDao?.updateTeam(arg!!)
-                        showSnackbar("Equipo modificado exitosamente!")
-                        parentFragmentManager.popBackStack()
+                        val builder = AlertDialog.Builder(context)
+                        builder.setMessage("¿Está seguro que desea modificar este equipo?")
+                            .setCancelable(false)
+                            .setPositiveButton("Si"){ dialog, id ->
+                                arg!!.name = etTeamName.text.toString()
+                                arg!!.nationalTitles = etNationalTitles.text.toString().toInt()
+                                arg!!.internationalTitles = etInternationalTitles.text.toString().toInt()
+                                arg!!.nationalCups = etNationalCups.text.toString().toInt()
+                                arg!!.foundationYear = etYear.text.toString().toInt()
+                                arg!!.stadiumName = etStadium.text.toString()
+                                arg!!.stadiumCapacity = etStadiumCapacity.text.toString().toInt()
+                                arg!!.urlAvatar = etURL.text.toString()
+                                arg!!.location = etLocation.text.toString()
+
+                                teamDao?.updateTeam(arg!!)
+                                showSnackbar("Equipo modificado exitosamente!")
+                                parentFragmentManager.popBackStack()
+                            }
+                            .setNegativeButton("No") { dialog, id ->
+                                dialog.dismiss()
+                            }
+                        val alert = builder.create()
+                        alert.show()
+
                     } else {
-                        newTeam = Team(
-                            0,
-                            etTeamName.text.toString(),
-                            etNationalTitles.text.toString().toInt(),
-                            etInternationalTitles.text.toString().toInt(),
-                            etYear.text.toString().toInt(),
-                            etStadium.text.toString(),
-                            etStadiumCapacity.text.toString().toInt(),
-                            etURL.text.toString(),
-                            etNationalCups.text.toString().toInt(),
-                            etLocation.text.toString()
-                        )
-                        teamDao?.insertTeam(newTeam)
-                        showSnackbar("Nuevo equipo agregado!")
-                        parentFragmentManager.popBackStack()
+
+                        val builder = AlertDialog.Builder(context)
+                        builder.setMessage("¿Está seguro que desea agregar este equipo?")
+                            .setCancelable(false)
+                            .setPositiveButton("Si"){ dialog, id ->
+                                newTeam = Team(
+                                    0,
+                                    etTeamName.text.toString(),
+                                    etNationalTitles.text.toString().toInt(),
+                                    etInternationalTitles.text.toString().toInt(),
+                                    etYear.text.toString().toInt(),
+                                    etStadium.text.toString(),
+                                    etStadiumCapacity.text.toString().toInt(),
+                                    etURL.text.toString(),
+                                    etNationalCups.text.toString().toInt(),
+                                    etLocation.text.toString()
+                                )
+                                teamDao?.insertTeam(newTeam)
+                                showSnackbar("Nuevo equipo agregado!")
+                                parentFragmentManager.popBackStack()
+                            }
+                            .setNegativeButton("No") { dialog, id ->
+                                dialog.dismiss()
+                            }
+                        val alert = builder.create()
+                        alert.show()
+
                     }
                 }
             }

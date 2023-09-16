@@ -1,5 +1,6 @@
 package com.example.application.fragments
 
+import android.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,13 +13,18 @@ import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.application.R
+import com.example.application.database.AppDatabase
+import com.example.application.database.TeamDao
 import com.example.application.entities.Team
 import com.example.application.entities.User
+import com.google.android.material.snackbar.Snackbar
 
 class TeamDetailFragment : Fragment() {
 
     private lateinit var v : View
     private lateinit var arg : Team
+
+    private lateinit var snackbar : Snackbar
 
     private lateinit var textViewTeamName : TextView
     private lateinit var textViewTeamStadium : TextView
@@ -31,6 +37,8 @@ class TeamDetailFragment : Fragment() {
     private lateinit var btnEditTeam : Button
     private lateinit var btnRemoveTeam : Button
 
+    private var db: AppDatabase? = null
+    private var teamDao: TeamDao? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,12 +62,30 @@ class TeamDetailFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        btnRemoveTeam.setOnClickListener {
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("¿Está seguro que desea eliminar este equipo?")
+                .setCancelable(false)
+                .setPositiveButton("Si"){ dialog, id ->
+                    teamDao?.delete(arg)
+                    showSnackbar("Equipo eliminado exitosamente!")
+                    parentFragmentManager.popBackStack()
+                }
+                .setNegativeButton("No") { dialog, id ->
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
+
         return v
     }
 
     override fun onStart() {
         super.onStart()
 
+        db = AppDatabase.getInstance(v.context)
+        teamDao = db?.teamDao()
         arg = TeamDetailFragmentArgs.fromBundle(requireArguments()).team
 
         textViewTeamName.text = arg.name
@@ -71,6 +97,11 @@ class TeamDetailFragment : Fragment() {
         textViewTeamFoundation.text = arg.foundationYear.toString()
         Glide.with(v).load(arg.urlAvatar).into(imageViewTeamAvatar)
 
+    }
+
+    private fun showSnackbar(msg : String){
+        snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_LONG)
+        snackbar.show()
     }
 
 }
