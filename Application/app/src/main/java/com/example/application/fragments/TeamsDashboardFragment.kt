@@ -1,6 +1,6 @@
 package com.example.application.fragments
 
-import androidx.lifecycle.ViewModelProvider
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,8 +14,6 @@ import com.example.application.adapters.TeamAdapter
 import com.example.application.database.AppDatabase
 import com.example.application.database.TeamDao
 import com.example.application.entities.Team
-import com.example.application.entities.TeamsRepository
-import com.example.application.entities.User
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -57,13 +55,47 @@ class TeamsDashboardFragment : Fragment() {
 
         val teamList : MutableList<Team> = teamDao?.fetchAllTeams().orEmpty().filterNotNull().toMutableList()
 
-        adapter = TeamAdapter(teamList) {
-            val action =
-                TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamDetailFragment(
-                    teamList[it]
-                )
-            findNavController().navigate(action)
-        }
+        adapter = TeamAdapter(
+            teamList,
+            {
+                val action =
+                    TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamDetailFragment(
+                        teamList[it]
+                    )
+                findNavController().navigate(action)
+            },
+            {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage(teamList[it].name)
+                    .setCancelable(true)
+                    .setPositiveButton("Editar"){ dialog, id ->
+                        val action =
+                            TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamAddFragment(
+                                teamList[it]
+                            )
+                        findNavController().navigate(action)
+                    }
+                    .setNegativeButton("Eliminar") { dialog, id ->
+                        val del_builder = AlertDialog.Builder(context)
+                        del_builder.setMessage("¿Está seguro que desea eliminar este equipo?")
+                            .setCancelable(false)
+                            .setPositiveButton("Si"){ dialog, id ->
+                                teamDao?.delete(teamList[it])
+                                showSnackbar("Equipo eliminado exitosamente!")
+                                teamList.removeAt(it)
+                                recTeams.adapter?.notifyItemRemoved(it)
+
+                            }
+                            .setNegativeButton("No") { dialog, id ->
+                                dialog.dismiss()
+                            }
+                        val alert = del_builder.create()
+                        alert.show()
+                    }
+                val alert = builder.create()
+                alert.show()
+            }
+        )
         recTeams.layoutManager = LinearLayoutManager(context)
         recTeams.adapter = adapter
 

@@ -11,9 +11,10 @@ import com.bumptech.glide.Glide
 import com.example.application.R
 import com.example.application.entities.Team
 
-class TeamAdapter (
+class TeamAdapter(
     var teamList: MutableList<Team>,
-    var onClick : (Int) -> Unit
+    var onClick: (Int) -> Unit,
+    var onLongClick : (Int) -> Unit
 ) : RecyclerView.Adapter<TeamAdapter.TeamHolder>(){
 
     class TeamHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -54,6 +55,10 @@ class TeamAdapter (
         holder.setAvatar(teamList[position].urlAvatar)
         holder.getCard().setOnClickListener {
             onClick(position)
+        }
+        holder.getCard().setOnLongClickListener {
+            onLongClick(position)
+            true
         }
     }
 
