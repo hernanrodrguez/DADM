@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.application.R
 import com.example.application.entities.Team
@@ -26,6 +28,8 @@ class TeamDetailFragment : Fragment() {
     private lateinit var textViewTeamLocation : TextView
     private lateinit var textViewTeamFoundation : TextView
     private lateinit var imageViewTeamAvatar: ImageView
+    private lateinit var btnEditTeam : Button
+    private lateinit var btnRemoveTeam : Button
 
 
     override fun onCreateView(
@@ -42,6 +46,13 @@ class TeamDetailFragment : Fragment() {
         textViewTeamLocation = v.findViewById(R.id.textViewTeamLocation)
         textViewTeamFoundation = v.findViewById(R.id.textViewTeamFoundation)
         imageViewTeamAvatar = v.findViewById(R.id.imageViewTeamAvatar)
+        btnEditTeam = v.findViewById(R.id.btnEditTeam)
+        btnRemoveTeam = v.findViewById(R.id.btnRemoveTeam)
+
+        btnEditTeam.setOnClickListener {
+            val action = TeamDetailFragmentDirections.actionTeamDetailFragmentToTeamAddFragment(arg)
+            findNavController().navigate(action)
+        }
 
         return v
     }

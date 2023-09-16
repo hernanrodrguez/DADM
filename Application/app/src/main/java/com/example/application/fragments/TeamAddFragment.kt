@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.example.application.R
 import com.example.application.adapters.TeamAdapter
 import com.example.application.database.AppDatabase
@@ -27,7 +28,9 @@ class TeamAddFragment : Fragment() {
     private var teamDao: TeamDao? = null
 
     private lateinit var newTeam : Team
+    private  var arg : Team? = null
 
+    private lateinit var tvTitle : TextView
     private lateinit var etTeamName : EditText
     private lateinit var etNationalTitles : EditText
     private lateinit var etInternationalTitles : EditText
@@ -60,6 +63,7 @@ class TeamAddFragment : Fragment() {
     ): View? {
         v = inflater.inflate(R.layout.fragment_team_add, container, false)
 
+        tvTitle = v.findViewById(R.id.tvTitle)
         etTeamName = v.findViewById(R.id.etTeamName)
         etNationalTitles = v.findViewById(R.id.etNationalTitles)
         etInternationalTitles = v.findViewById(R.id.etInternationalTitles)
@@ -84,26 +88,40 @@ class TeamAddFragment : Fragment() {
                 NO_YEAR -> showSnackbar("Ingrese año de fundacion")
                 NO_URL -> showSnackbar("Ingrese URL al escudo")
                 OK -> {
-                    newTeam = Team(
-                        0,
-                        etTeamName.text.toString(),
-                        etNationalTitles.text.toString().toInt(),
-                        etInternationalTitles.text.toString().toInt(),
-                        etYear.text.toString().toInt(),
-                        etStadium.text.toString(),
-                        etStadiumCapacity.text.toString().toInt(),
-                        etURL.text.toString(),
-                        etNationalCups.text.toString().toInt(),
-                        etLocation.text.toString()
-                    )
+                    if(arg != null){
+                        arg!!.name = etTeamName.text.toString()
+                        arg!!.nationalTitles = etNationalTitles.text.toString().toInt()
+                        arg!!.internationalTitles = etInternationalTitles.text.toString().toInt()
+                        arg!!.nationalCups = etNationalCups.text.toString().toInt()
+                        arg!!.foundationYear = etYear.text.toString().toInt()
+                        arg!!.stadiumName = etStadium.text.toString()
+                        arg!!.stadiumCapacity = etStadiumCapacity.text.toString().toInt()
+                        arg!!.urlAvatar = etURL.text.toString()
+                        arg!!.location = etLocation.text.toString()
+
+                        teamDao?.updateTeam(arg!!)
+                        showSnackbar("Equipo modificado exitosamente!")
+                        parentFragmentManager.popBackStack()
+                    } else {
+                        newTeam = Team(
+                            0,
+                            etTeamName.text.toString(),
+                            etNationalTitles.text.toString().toInt(),
+                            etInternationalTitles.text.toString().toInt(),
+                            etYear.text.toString().toInt(),
+                            etStadium.text.toString(),
+                            etStadiumCapacity.text.toString().toInt(),
+                            etURL.text.toString(),
+                            etNationalCups.text.toString().toInt(),
+                            etLocation.text.toString()
+                        )
+                        teamDao?.insertTeam(newTeam)
+                        showSnackbar("Nuevo equipo agregado!")
+                        parentFragmentManager.popBackStack()
+                    }
                 }
             }
-            if(this::newTeam.isInitialized) {
-                teamDao?.insertTeam(newTeam)
-                showSnackbar("Nuevo equipo agregado!")
-            }
         }
-
         return v
     }
 
@@ -112,6 +130,22 @@ class TeamAddFragment : Fragment() {
 
         db = AppDatabase.getInstance(v.context)
         teamDao = db?.teamDao()
+        arg = TeamAddFragmentArgs.fromBundle(requireArguments()).team
+
+        if(arg != null){
+            etTeamName.setText(arg!!.name)
+            etNationalTitles.setText(arg!!.nationalTitles.toString())
+            etInternationalTitles.setText(arg!!.internationalTitles.toString())
+            etNationalCups.setText(arg!!.nationalCups.toString())
+            etLocation.setText(arg!!.location)
+            etStadium.setText(arg!!.stadiumName)
+            etStadiumCapacity.setText(arg!!.stadiumCapacity.toString())
+            etYear.setText(arg!!.foundationYear.toString())
+            etURL.setText(arg!!.urlAvatar)
+
+            tvTitle.text = "Editar Equipo"
+            btnAdd.text = "Editar"
+        }
 
     }
 

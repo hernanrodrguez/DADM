@@ -25,6 +25,9 @@
         <argument
             android:name="team"
             app:argType="com.example.application.entities.Team" />
+        <action
+            android:id="@+id/action_teamDetailFragment_to_teamAddFragment"
+            app:destination="@id/teamAddFragment" />
     </fragment>
     <fragment
         android:id="@+id/userDetailFragment"
@@ -35,5 +38,11 @@
         android:id="@+id/teamAddFragment"
         android:name="com.example.application.fragments.TeamAddFragment"
         android:label="fragment_team_add"
-        tools:layout="@layout/fragment_team_add" />
+        tools:layout="@layout/fragment_team_add" >
+        <argument
+            android:name="team"
+            app:argType="com.example.application.entities.Team"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
