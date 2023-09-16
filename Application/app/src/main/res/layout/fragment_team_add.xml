@@ -51,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text"
+                android:text="Equipo A"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                android:maxLength="11"
+                android:text="10"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,8 +99,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
+                android:text="10"
                 android:lineSpacingExtra="2sp"
-                android:maxLength="70"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -123,8 +124,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
+                android:text="10"
                 android:lineSpacingExtra="2sp"
-                android:maxLength="70"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -148,6 +149,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text"
+                android:text="Narnia"
                 android:lineSpacingExtra="2sp"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -172,11 +174,37 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text"
+                android:text="El Monumento"
                 android:lineSpacingExtra="2sp"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvStadium" />
+
+            <TextView
+                android:id="@+id/tvStadiumCapacity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineSpacingExtra="3sp"
+                android:text="Capacidad del Estadio"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etStadium" />
+
+            <EditText
+                android:id="@+id/etStadiumCapacity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="1000"
+                android:lineSpacingExtra="2sp"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvStadiumCapacity" />
 
             <TextView
                 android:id="@+id/tvYear"
@@ -188,7 +216,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etStadium" />
+                app:layout_constraintTop_toBottomOf="@+id/etStadiumCapacity" />
 
             <EditText
                 android:layout_width="0dp"
@@ -196,8 +224,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
+                android:text="2000"
                 android:lineSpacingExtra="2sp"
-                android:maxLength="20"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -221,15 +249,15 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text"
+                android:text="https://tn.com.ar/resizer/71-TWbWIhqFKkPeoWoiRudV-75g=/767x0/smart/filters:format(webp)/cloudfront-us-east-1.images.arcpublishing.com/artear/7CRWCT4DNUXVW5M3R4N6HZZRMI.jpg"
                 android:lineSpacingExtra="2sp"
-                android:maxLength="20"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvURL" />
 
             <Button
-                android:id="@+id/btnSignup"
+                android:id="@+id/btnAdd"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:layout_marginTop="24dp"
