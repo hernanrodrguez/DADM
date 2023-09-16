@@ -30,8 +30,6 @@ class TeamsDashboardFragment : Fragment() {
     private var db: AppDatabase? = null
     private var teamDao: TeamDao? = null
 
-    //private var teamsRepository : TeamsRepository = TeamsRepository()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +40,8 @@ class TeamsDashboardFragment : Fragment() {
         fab = v.findViewById(R.id.fab)
 
         fab.setOnClickListener {
-            showSnackbar("FAB pressed!")
+            val action = TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamAddFragment()
+            findNavController().navigate(action)
         }
 
         return v

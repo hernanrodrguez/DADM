@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_teamsDashboardFragment_to_teamDetailFragment"
             app:destination="@id/teamDetailFragment" />
+        <action
+            android:id="@+id/action_teamsDashboardFragment_to_teamAddFragment"
+            app:destination="@id/teamAddFragment" />
     </fragment>
     <fragment
         android:id="@+id/teamDetailFragment"
@@ -28,4 +31,9 @@
         android:name="com.example.application.fragments.UserDetailFragment"
         android:label="fragment_user_detail"
         tools:layout="@layout/fragment_user_detail" />
+    <fragment
+        android:id="@+id/teamAddFragment"
+        android:name="com.example.application.fragments.TeamAddFragment"
+        android:label="fragment_team_add"
+        tools:layout="@layout/fragment_team_add" />
 </navigation>
