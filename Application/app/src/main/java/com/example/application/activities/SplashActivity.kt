@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.preference.PreferenceManager
 import com.example.application.R
 
 class SplashActivity : AppCompatActivity() {
@@ -21,5 +23,16 @@ class SplashActivity : AppCompatActivity() {
                 finish()
             }
             , SPLASH_TIME_OUT)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        if(prefs.getBoolean("theme", true)){
+            setTheme(R.style.Base_Theme_Application)
+        } else {
+            setTheme(R.style.Theme_Application)
+        }
+
     }
 }

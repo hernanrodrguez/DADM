@@ -78,7 +78,7 @@ class TeamsDashboardFragment : Fragment() {
                     .setNegativeButton("Eliminar") { dialog, id ->
                         val del_builder = AlertDialog.Builder(context)
                         del_builder.setMessage("¿Está seguro que desea eliminar este equipo?")
-                            .setCancelable(false)
+                            .setCancelable(true)
                             .setPositiveButton("Si"){ dialog, id ->
                                 teamDao?.delete(teamList[it])
                                 showSnackbar("Equipo eliminado exitosamente!")

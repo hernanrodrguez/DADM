@@ -11,7 +11,6 @@ import com.example.application.entities.User
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun teamDao(): TeamDao
-    //abstract fun userDao() :UserDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null

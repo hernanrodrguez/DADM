@@ -8,10 +8,7 @@ import android.widget.EditText
 import com.example.application.R
 import com.example.application.database.AppDatabase
 import com.example.application.database.TeamDao
-import com.example.application.database.UserDao
-import com.example.application.entities.Team
 import com.example.application.entities.User
-import com.example.application.fragments.LoginFragment
 import com.google.android.material.snackbar.Snackbar
 
 class LoginActivity : AppCompatActivity() {
@@ -69,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
                 WRONG_PASSWORD -> showSnackbar("Wrong password")
 
                 LOGIN_OK -> {
-                    startActivity(Intent(this,MainActivity::class.java))
+                    startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }
 

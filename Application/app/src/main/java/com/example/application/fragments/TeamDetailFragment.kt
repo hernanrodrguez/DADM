@@ -65,7 +65,7 @@ class TeamDetailFragment : Fragment() {
         btnRemoveTeam.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setMessage("¿Está seguro que desea eliminar este equipo?")
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton("Si"){ dialog, id ->
                     teamDao?.delete(arg)
                     showSnackbar("Equipo eliminado exitosamente!")

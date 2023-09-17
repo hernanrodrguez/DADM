@@ -93,7 +93,7 @@ class TeamAddFragment : Fragment() {
 
                         val builder = AlertDialog.Builder(context)
                         builder.setMessage("¿Está seguro que desea modificar este equipo?")
-                            .setCancelable(false)
+                            .setCancelable(true)
                             .setPositiveButton("Si"){ dialog, id ->
                                 arg!!.name = etTeamName.text.toString()
                                 arg!!.nationalTitles = etNationalTitles.text.toString().toInt()
@@ -119,7 +119,7 @@ class TeamAddFragment : Fragment() {
 
                         val builder = AlertDialog.Builder(context)
                         builder.setMessage("¿Está seguro que desea agregar este equipo?")
-                            .setCancelable(false)
+                            .setCancelable(true)
                             .setPositiveButton("Si"){ dialog, id ->
                                 newTeam = Team(
                                     0,
