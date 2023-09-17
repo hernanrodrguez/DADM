@@ -26,7 +26,7 @@ class StartingTeams (private val context: Context) : RoomDatabase.Callback() {
      * Pre-populate database with hard-coded users
      */
     private fun fillWithStartingTeams(context: Context) {
-        val users = listOf(
+        val teams = listOf(
             Team(
                 1,
                 "Argentinos Juniors",
@@ -330,7 +330,7 @@ class StartingTeams (private val context: Context) : RoomDatabase.Callback() {
         )
         val dao = AppDatabase.getInstance(context)?.teamDao()
 
-        users.forEach {
+        teams.forEach {
             dao?.insertTeam(it)
         }
     }

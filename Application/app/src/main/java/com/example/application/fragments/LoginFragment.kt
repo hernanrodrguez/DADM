@@ -23,8 +23,8 @@ class LoginFragment : Fragment() {
     private lateinit var snackbar : Snackbar
     private lateinit var currentUser : User
 
-    private var user1 : User = User("juan", "pass")
-    private var user2 : User = User("pedro", "1234")
+    /*private var user1 : User = User("juan", "pass")
+    private var user2 : User = User("pedro", "1234")*/
 
     private var usersList : MutableList<User> = mutableListOf()
 
@@ -47,8 +47,8 @@ class LoginFragment : Fragment() {
         editTextUsername = v.findViewById(R.id.editTextUsername)
         editTextPassword = v.findViewById(R.id.editTextPassword)
 
-        usersList.add(user1)
-        usersList.add(user2)
+        /*usersList.add(user1)
+        usersList.add(user2)*/
 
         return v
     }
