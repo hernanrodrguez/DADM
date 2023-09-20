@@ -1,17 +1,24 @@
 package com.example.application.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.application.R
 import com.example.application.database.AppDatabase
 import com.example.application.database.TeamDao
 import com.example.application.entities.User
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 class LoginActivity : AppCompatActivity() {
+
+    private val PREF_NAME = "myPreferences"
 
     private lateinit var btnLogin : Button
     private lateinit var editTextUsername : EditText
@@ -66,6 +73,12 @@ class LoginActivity : AppCompatActivity() {
                 WRONG_PASSWORD -> showSnackbar("Wrong password")
 
                 LOGIN_OK -> {
+                    val sharedPref: SharedPreferences = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                    val editor = sharedPref.edit()
+
+                    val json: String = GsonBuilder().create().toJson(currentUser)
+                    editor.putString("USER", json).apply()
+
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }

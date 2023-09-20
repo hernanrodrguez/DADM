@@ -80,7 +80,7 @@
                 android:src="@drawable/baseline_groups_24"/>
 
             <TextView
-                android:id="@+id/textViewTeamStadium"
+                android:id="@+id/textViewUserTeam"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                 android:src="@drawable/baseline_location_on_24"/>
 
             <TextView
-                android:id="@+id/textViewTeamFoundation"
+                android:id="@+id/textViewUserCity"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
