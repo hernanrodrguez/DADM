@@ -16,6 +16,18 @@ class User (
     @ColumnInfo(name = "username")
     var username: String,
 
+    @ColumnInfo(name = "email")
+    var email: String,
+
+    @ColumnInfo(name = "club")
+    var club: String,
+
+    @ColumnInfo(name = "city")
+    var city: String,
+
+    @ColumnInfo(name = "img")
+    var img: String,
+
     @ColumnInfo(name = "password")
     private var password: String
 ) : Parcelable {

@@ -12,7 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.application.R
 import com.example.application.activities.LoginActivity
 import com.example.application.activities.MainActivity
@@ -20,6 +22,7 @@ import com.example.application.activities.SettingsActivity
 import com.example.application.entities.User
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import java.util.Locale
 
 class UserDetailFragment : Fragment() {
 
@@ -35,6 +38,7 @@ class UserDetailFragment : Fragment() {
     private lateinit var textUserEmail : TextView
     private lateinit var textViewUserTeam: TextView
     private lateinit var textViewUserCity : TextView
+    private lateinit var imageViewUserAvatar : ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,15 +51,18 @@ class UserDetailFragment : Fragment() {
         val str = sharedPref.getString("USER", "")
         val user = GsonBuilder().create().fromJson(str, User::class.java)
 
-        Log.d("JSON", user.username)
-
-
         textViewUserName = v.findViewById(R.id.textViewUserName)
         textUserEmail = v.findViewById(R.id.textUserEmail)
         textViewUserTeam = v.findViewById(R.id.textViewUserTeam)
         textViewUserCity = v.findViewById(R.id.textViewUserCity)
+        imageViewUserAvatar = v.findViewById(R.id.imageViewUserAvatar)
 
-        textViewUserName.setText(user.username)
+        textViewUserName.text = user.username.capitalize()
+        textUserEmail.text = user.email
+        textViewUserTeam.text = user.club
+        textViewUserCity.text = user.city
+
+        Glide.with(v).load(user.img).into(imageViewUserAvatar)
 
         btnSettings = v.findViewById(R.id.btnSettings)
         btnLogOut = v.findViewById(R.id.btnLogOut)
