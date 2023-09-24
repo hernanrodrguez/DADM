@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Clubes AFA</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="test">TEST</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="agregar_equipo">Add Team</string>
+    <string name="nombre">Name</string>
+    <string name="torneos_locales">Local Tournaments</string>
+    <string name="copas_internacionales">International Cups</string>
+    <string name="copas_nacionales">National Cups</string>
+    <string name="ubicaci_n">Location</string>
+    <string name="nombre_del_estadio">Stadium Name</string>
+    <string name="capacidad_del_estadio">Stadium Capacity</string>
+    <string name="a_o_de_fundaci_n">Foundation Year</string>
+    <string name="link_al_escudo">Shield Link</string>
+    <string name="agregar">Add</string>
+    <string name="club">Club</string>
+    <string name="torneos_n_locales">Local\n Tournaments</string>
+    <string name="copas_n_internacionales">International\n Cups</string>
+    <string name="editar">Edit</string>
+    <string name="eliminar">Delete</string>
+    <string name="configuraci_n">Settings</string>
+    <string name="salir">Exit</string>
+    <string name="ingrese_nombre_equipo">Enter team name</string>
+    <string name="ingrese_titulos_locales">Enter local titles</string>
+    <string name="ingrese_titulos_internacionales">Enter international titles</string>
+    <string name="ingrese_copas_nacionales">Enter national cups</string>
+    <string name="ingrese_ubicacion_equipo">Enter team location</string>
+    <string name="ingrese_estadio">Enter stadium</string>
+    <string name="ingrese_capacidad_estadio">Enter stadium capacity</string>
+    <string name="ingrese_anio_fundacion">Enter foundation year</string>
+    <string name="ingrese_url_escudo">Enter shield URL</string>
+    <string name="confirmar_modificacion_equipo">Are you sure you want to modify this team?</string>
+    <string name="equipo_modificado_exitosamente">Team modified successfully!</string>
+    <string name="confirmar_agregar_equipo">Are you sure you want to add this team?</string>
+    <string name="si">Yes</string>
+    <string name="nuevo_equipo_agregado">New team added!</string>
+    <string name="no">No</string>
+    <string name="editar_equipo">Edit Team</string>
+    <string name="confirmar_eliminar_equipo">Are you sure you want to delete this team?</string>
+    <string name="equipo_eliminado_exitosamente">Team deleted successfully!</string>
+    <string name="confirmar_salir">Are you sure you want to exit?</string>
+    <string name="idioma_app">App language</string>
+
+
+</resources>

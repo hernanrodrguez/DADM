@@ -1,9 +1,14 @@
 package com.example.application.activities
 
+import android.annotation.TargetApi
+import android.content.Context
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import com.example.application.R
+import java.util.Locale
 
 class SettingsActivity : AppCompatActivity() {
 

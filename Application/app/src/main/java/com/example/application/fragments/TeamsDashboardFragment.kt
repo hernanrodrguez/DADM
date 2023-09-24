@@ -1,12 +1,15 @@
 package com.example.application.fragments
 
 import android.app.AlertDialog
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.application.R
@@ -16,6 +19,7 @@ import com.example.application.database.TeamDao
 import com.example.application.entities.Team
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 
 class TeamsDashboardFragment : Fragment() {
 
@@ -33,6 +37,20 @@ class TeamsDashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_teams_dashboard, container, false)
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if(prefs.getString("lang", "es") == "en"){
+            val locale = Locale("en")
+            val config = Configuration(resources.configuration)
+            config.setLocale(locale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        } else {
+            val systemLocale = Resources.getSystem().configuration.locale
+            // Configura la configuración regional de la aplicación a la configuración regional del sistema
+            val config = Configuration(resources.configuration)
+            config.setLocale(systemLocale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        }
 
         recTeams = v.findViewById(R.id.recTeams)
         fab = v.findViewById(R.id.fab)
@@ -68,25 +86,25 @@ class TeamsDashboardFragment : Fragment() {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage(teamList[it].name)
                     .setCancelable(true)
-                    .setPositiveButton("Editar"){ dialog, id ->
+                    .setPositiveButton(getString(R.string.editar)){ dialog, id ->
                         val action =
                             TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamAddFragment(
                                 teamList[it]
                             )
                         findNavController().navigate(action)
                     }
-                    .setNegativeButton("Eliminar") { dialog, id ->
+                    .setNegativeButton(getString(R.string.eliminar)) { dialog, id ->
                         val del_builder = AlertDialog.Builder(context)
-                        del_builder.setMessage("¿Está seguro que desea eliminar este equipo?")
+                        del_builder.setMessage(getString(R.string.confirmar_eliminar_equipo))
                             .setCancelable(true)
-                            .setPositiveButton("Si"){ dialog, id ->
+                            .setPositiveButton(getString(R.string.si)){ dialog, id ->
                                 teamDao?.delete(teamList[it])
-                                showSnackbar("Equipo eliminado exitosamente!")
+                                showSnackbar(getString(R.string.equipo_eliminado_exitosamente))
                                 teamList.removeAt(it)
                                 recTeams.adapter?.notifyItemRemoved(it)
 
                             }
-                            .setNegativeButton("No") { dialog, id ->
+                            .setNegativeButton(getString(R.string.no)) { dialog, id ->
                                 dialog.dismiss()
                             }
                         val alert = del_builder.create()

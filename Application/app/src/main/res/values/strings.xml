@@ -2,6 +2,8 @@
     <string name="app_name">Clubes AFA</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
+    <string name="test">PRUEBA</string>
+
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
@@ -16,4 +18,47 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">Ingresar</string>
+    <string name="agregar_equipo">Agregar Equipo</string>
+    <string name="nombre">Nombre</string>
+    <string name="torneos_locales">Torneos Locales</string>
+    <string name="copas_internacionales">Copas Internacionales</string>
+    <string name="copas_nacionales">Copas Nacionales</string>
+    <string name="ubicaci_n">Ubicación</string>
+    <string name="nombre_del_estadio">Nombre del Estadio</string>
+    <string name="capacidad_del_estadio">Capacidad del Estadio</string>
+    <string name="a_o_de_fundaci_n">Año de fundación</string>
+    <string name="link_al_escudo">Link al escudo</string>
+    <string name="agregar">Agregar</string>
+    <string name="club">Club</string>
+    <string name="torneos_n_locales">Torneos\n Locales</string>
+    <string name="copas_n_internacionales">Copas\n Internacionales</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="configuraci_n">Configuración</string>
+    <string name="salir">Salir</string>
+    <string name="ingrese_nombre_equipo">Ingrese nombre del equipo</string>
+    <string name="ingrese_titulos_locales">Ingrese títulos locales</string>
+    <string name="ingrese_titulos_internacionales">Ingrese títulos internacionales</string>
+    <string name="ingrese_copas_nacionales">Ingrese copas nacionales</string>
+    <string name="ingrese_ubicacion_equipo">Ingrese ubicación del equipo</string>
+    <string name="ingrese_estadio">Ingrese estadio</string>
+    <string name="ingrese_capacidad_estadio">Ingrese capacidad del estadio</string>
+    <string name="ingrese_anio_fundacion">Ingrese año de fundación</string>
+    <string name="ingrese_url_escudo">Ingrese URL al escudo</string>
+    <string name="confirmar_modificacion_equipo">¿Está seguro que desea modificar este equipo?</string>
+    <string name="equipo_modificado_exitosamente">Equipo modificado exitosamente!</string>
+    <string name="confirmar_agregar_equipo">¿Está seguro que desea agregar este equipo?</string>
+    <string name="si">Sí</string>
+    <string name="nuevo_equipo_agregado">Nuevo equipo agregado!</string>
+    <string name="no">No</string>
+    <string name="editar_equipo">Editar Equipo</string>
+    <string name="confirmar_eliminar_equipo">¿Está seguro que desea eliminar este equipo?</string>
+    <string name="equipo_eliminado_exitosamente">Equipo eliminado exitosamente!</string>
+    <string name="confirmar_salir">¿Está seguro que desea salir?</string>
+    <string name="idioma_app">Idioma de la app</string>
+
+
 </resources>

@@ -3,11 +3,14 @@ package com.example.application.activities
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.preference.PreferenceManager
 import com.example.application.R
 import com.example.application.database.AppDatabase
 import com.example.application.database.TeamDao
@@ -15,6 +18,7 @@ import com.example.application.entities.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import java.util.Locale
 
 class LoginActivity : AppCompatActivity() {
 
@@ -42,9 +46,27 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        if(prefs.getString("lang", "es") == "en"){
+            val locale = Locale("en")
+            val config = Configuration(resources.configuration)
+            config.setLocale(locale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        } else {
+            val systemLocale = Resources.getSystem().configuration.locale
+            // Configura la configuración regional de la aplicación a la configuración regional del sistema
+            val config = Configuration(resources.configuration)
+            config.setLocale(systemLocale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        }
+
         btnLogin = findViewById(R.id.btnLogin)
         editTextUsername = findViewById(R.id.editTextUsername)
         editTextPassword = findViewById(R.id.editTextPassword)
+
+        btnLogin.text = getString(R.string.login)
+        editTextUsername.hint = getString(R.string.username)
+        editTextPassword.hint = getString(R.string.password)
     }
 
     override fun onStart() {

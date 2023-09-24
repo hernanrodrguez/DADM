@@ -1,12 +1,16 @@
 package com.example.application.activities
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.application.R
-import com.example.application.entities.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,8 +1,13 @@
 package com.example.application.fragments
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +16,7 @@ import android.webkit.URLUtil
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.preference.PreferenceManager
 import com.example.application.R
 import com.example.application.adapters.TeamAdapter
 import com.example.application.database.AppDatabase
@@ -18,6 +24,7 @@ import com.example.application.database.TeamDao
 import com.example.application.entities.Team
 import com.example.application.entities.User
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 
 class TeamAddFragment : Fragment() {
 
@@ -32,6 +39,16 @@ class TeamAddFragment : Fragment() {
     private  var arg : Team? = null
 
     private lateinit var tvTitle : TextView
+    private lateinit var tvTeamName : TextView
+    private lateinit var tvNationalTitles : TextView
+    private lateinit var tvInternationalTitles : TextView
+    private lateinit var tvNationalCups : TextView
+    private lateinit var tvLocation : TextView
+    private lateinit var tvStadium : TextView
+    private lateinit var tvStadiumCapacity : TextView
+    private lateinit var tvYear : TextView
+    private lateinit var tvURL : TextView
+
     private lateinit var etTeamName : EditText
     private lateinit var etNationalTitles : EditText
     private lateinit var etInternationalTitles : EditText
@@ -65,6 +82,16 @@ class TeamAddFragment : Fragment() {
         v = inflater.inflate(R.layout.fragment_team_add, container, false)
 
         tvTitle = v.findViewById(R.id.tvTitle)
+        tvURL = v.findViewById(R.id.tvURL)
+        tvYear = v.findViewById(R.id.tvYear)
+        tvStadiumCapacity = v.findViewById(R.id.tvStadiumCapacity)
+        tvStadium = v.findViewById(R.id.tvStadium)
+        tvLocation = v.findViewById(R.id.tvLocation)
+        tvNationalCups = v.findViewById(R.id.tvNationalCups)
+        tvInternationalTitles = v.findViewById(R.id.tvInternationalTitles)
+        tvNationalTitles = v.findViewById(R.id.tvNationalTitles)
+        tvTeamName = v.findViewById(R.id.tvTeamName)
+
         etTeamName = v.findViewById(R.id.etTeamName)
         etNationalTitles = v.findViewById(R.id.etNationalTitles)
         etInternationalTitles = v.findViewById(R.id.etInternationalTitles)
@@ -76,25 +103,51 @@ class TeamAddFragment : Fragment() {
         etURL = v.findViewById(R.id.etURL)
         btnAdd = v.findViewById(R.id.btnAdd)
 
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if(prefs.getString("lang", "es") == "en"){
+            val locale = Locale("en")
+            val config = Configuration(resources.configuration)
+            config.setLocale(locale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        } else {
+            val systemLocale = Resources.getSystem().configuration.locale
+            // Configura la configuración regional de la aplicación a la configuración regional del sistema
+            val config = Configuration(resources.configuration)
+            config.setLocale(systemLocale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        }
+
+        tvTitle.text = getString(R.string.agregar_equipo)
+        tvURL.text = getString(R.string.link_al_escudo)
+        tvYear.text = getString(R.string.a_o_de_fundaci_n)
+        tvStadiumCapacity.text = getString(R.string.capacidad_del_estadio)
+        tvStadium.text = getString(R.string.nombre_del_estadio)
+        tvLocation.text = getString(R.string.ubicaci_n)
+        tvNationalCups.text = getString(R.string.copas_nacionales)
+        tvInternationalTitles.text = getString(R.string.copas_internacionales)
+        tvNationalTitles.text = getString(R.string.torneos_locales)
+        tvTeamName.text = getString(R.string.nombre)
+        btnAdd.text = getString(R.string.agregar)
+
         btnAdd.setOnClickListener {
 
             when(checkFields()){
-                NO_TEAM_NAME -> showSnackbar("Ingrese nombre del equipo")
-                NO_NATIONAL_TITLES -> showSnackbar("Ingrese titulos locales")
-                NO_INTERNATIONAL_TITLES -> showSnackbar("Ingrese titulos internacionales")
-                NO_NATIONAL_CUPS -> showSnackbar("Ingrese copas nacionales")
-                NO_LOCATION -> showSnackbar("Ingrese ubicacion del equipo")
-                NO_STADIUM -> showSnackbar("Ingrese estadio")
-                NO_STADIUM_CAPACITY -> showSnackbar("Ingrese capacidad del estadio")
-                NO_YEAR -> showSnackbar("Ingrese año de fundacion")
-                NO_URL -> showSnackbar("Ingrese URL al escudo")
+                NO_TEAM_NAME -> showSnackbar(getString(R.string.ingrese_nombre_equipo))
+                NO_NATIONAL_TITLES -> showSnackbar(getString(R.string.ingrese_titulos_locales))
+                NO_INTERNATIONAL_TITLES -> showSnackbar(getString(R.string.ingrese_titulos_internacionales))
+                NO_NATIONAL_CUPS -> showSnackbar(getString(R.string.ingrese_copas_nacionales))
+                NO_LOCATION -> showSnackbar(getString(R.string.ingrese_ubicacion_equipo))
+                NO_STADIUM -> showSnackbar(getString(R.string.ingrese_estadio))
+                NO_STADIUM_CAPACITY -> showSnackbar(getString(R.string.ingrese_capacidad_estadio))
+                NO_YEAR -> showSnackbar(getString(R.string.ingrese_anio_fundacion))
+                NO_URL -> showSnackbar(getString(R.string.ingrese_url_escudo))
                 OK -> {
                     if(arg != null){
 
                         val builder = AlertDialog.Builder(context)
-                        builder.setMessage("¿Está seguro que desea modificar este equipo?")
+                        builder.setMessage(getString(R.string.confirmar_modificacion_equipo))
                             .setCancelable(true)
-                            .setPositiveButton("Si"){ dialog, id ->
+                            .setPositiveButton(getString(R.string.si)){ dialog, id ->
                                 arg!!.name = etTeamName.text.toString()
                                 arg!!.nationalTitles = etNationalTitles.text.toString().toInt()
                                 arg!!.internationalTitles = etInternationalTitles.text.toString().toInt()
@@ -106,10 +159,10 @@ class TeamAddFragment : Fragment() {
                                 arg!!.location = etLocation.text.toString()
 
                                 teamDao?.updateTeam(arg!!)
-                                showSnackbar("Equipo modificado exitosamente!")
+                                showSnackbar(getString(R.string.equipo_modificado_exitosamente))
                                 parentFragmentManager.popBackStack()
                             }
-                            .setNegativeButton("No") { dialog, id ->
+                            .setNegativeButton(getString(R.string.no)) { dialog, id ->
                                 dialog.dismiss()
                             }
                         val alert = builder.create()
@@ -118,9 +171,9 @@ class TeamAddFragment : Fragment() {
                     } else {
 
                         val builder = AlertDialog.Builder(context)
-                        builder.setMessage("¿Está seguro que desea agregar este equipo?")
+                        builder.setMessage(getString(R.string.confirmar_agregar_equipo))
                             .setCancelable(true)
-                            .setPositiveButton("Si"){ dialog, id ->
+                            .setPositiveButton(getString(R.string.si)){ dialog, id ->
                                 newTeam = Team(
                                     0,
                                     etTeamName.text.toString(),
@@ -134,10 +187,10 @@ class TeamAddFragment : Fragment() {
                                     etLocation.text.toString()
                                 )
                                 teamDao?.insertTeam(newTeam)
-                                showSnackbar("Nuevo equipo agregado!")
+                                showSnackbar(getString(R.string.nuevo_equipo_agregado))
                                 parentFragmentManager.popBackStack()
                             }
-                            .setNegativeButton("No") { dialog, id ->
+                            .setNegativeButton(getString(R.string.no)) { dialog, id ->
                                 dialog.dismiss()
                             }
                         val alert = builder.create()
@@ -168,8 +221,8 @@ class TeamAddFragment : Fragment() {
             etYear.setText(arg!!.foundationYear.toString())
             etURL.setText(arg!!.urlAvatar)
 
-            tvTitle.text = "Editar Equipo"
-            btnAdd.text = "Editar"
+            tvTitle.text = getString(R.string.editar_equipo)
+            btnAdd.text = getString(R.string.editar)
         }
 
     }
