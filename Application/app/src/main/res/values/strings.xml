@@ -18,8 +18,8 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="username">username</string>
-    <string name="password">password</string>
+    <string name="username">Usuario</string>
+    <string name="password">Contraseña</string>
     <string name="login">Ingresar</string>
     <string name="agregar_equipo">Agregar Equipo</string>
     <string name="nombre">Nombre</string>

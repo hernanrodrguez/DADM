@@ -114,4 +114,25 @@ class UserDetailFragment : Fragment() {
 
         return v
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if(prefs.getString("lang", "es") == "en"){
+            val locale = Locale("en")
+            val config = Configuration(resources.configuration)
+            config.setLocale(locale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        } else {
+            val systemLocale = Resources.getSystem().configuration.locale
+            // Configura la configuración regional de la aplicación a la configuración regional del sistema
+            val config = Configuration(resources.configuration)
+            config.setLocale(systemLocale)
+            resources.updateConfiguration(config, resources.displayMetrics)
+        }
+
+        btnSettings.text = getString(R.string.configuraci_n)
+        btnLogOut.text = getString(R.string.salir)
+    }
 }
