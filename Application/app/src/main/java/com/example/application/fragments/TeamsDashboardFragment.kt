@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,16 +18,23 @@ import com.example.application.adapters.TeamAdapter
 import com.example.application.database.AppDatabase
 import com.example.application.database.TeamDao
 import com.example.application.entities.Team
+import com.example.application.interfaces.CurrentApi
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Locale
 
 class TeamsDashboardFragment : Fragment() {
 
-    private lateinit var v : View
-    private lateinit var recTeams : RecyclerView
-    private lateinit var adapter : TeamAdapter
-    private lateinit var snackbar : Snackbar
+    private lateinit var v: View
+    private lateinit var recTeams: RecyclerView
+    private lateinit var adapter: TeamAdapter
+    private lateinit var snackbar: Snackbar
     lateinit var fab: FloatingActionButton
 
     private var db: AppDatabase? = null
@@ -38,8 +46,14 @@ class TeamsDashboardFragment : Fragment() {
     ): View? {
         v = inflater.inflate(R.layout.fragment_teams_dashboard, container, false)
 
+
+        currentCity("current.json", "London")
+
+
+
+
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        if(prefs.getString("lang", "es") == "en"){
+        if (prefs.getString("lang", "es") == "en") {
             val locale = Locale("en")
             val config = Configuration(resources.configuration)
             config.setLocale(locale)
@@ -56,7 +70,8 @@ class TeamsDashboardFragment : Fragment() {
         fab = v.findViewById(R.id.fab)
 
         fab.setOnClickListener {
-            val action = TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamAddFragment()
+            val action =
+                TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamAddFragment()
             findNavController().navigate(action)
         }
 
@@ -71,7 +86,8 @@ class TeamsDashboardFragment : Fragment() {
 
         teamDao?.fetchAllTeams()
 
-        val teamList : MutableList<Team> = teamDao?.fetchAllTeams().orEmpty().filterNotNull().toMutableList()
+        val teamList: MutableList<Team> =
+            teamDao?.fetchAllTeams().orEmpty().filterNotNull().toMutableList()
 
         adapter = TeamAdapter(
             teamList,
@@ -86,7 +102,7 @@ class TeamsDashboardFragment : Fragment() {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage(teamList[it].name)
                     .setCancelable(true)
-                    .setPositiveButton(getString(R.string.editar)){ dialog, id ->
+                    .setPositiveButton(getString(R.string.editar)) { dialog, id ->
                         val action =
                             TeamsDashboardFragmentDirections.actionTeamsDashboardFragmentToTeamAddFragment(
                                 teamList[it]
@@ -97,7 +113,7 @@ class TeamsDashboardFragment : Fragment() {
                         val del_builder = AlertDialog.Builder(context)
                         del_builder.setMessage(getString(R.string.confirmar_eliminar_equipo))
                             .setCancelable(true)
-                            .setPositiveButton(getString(R.string.si)){ dialog, id ->
+                            .setPositiveButton(getString(R.string.si)) { dialog, id ->
                                 teamDao?.delete(teamList[it])
                                 showSnackbar(getString(R.string.equipo_eliminado_exitosamente))
                                 teamList.removeAt(it)
@@ -119,9 +135,32 @@ class TeamsDashboardFragment : Fragment() {
 
     }
 
-    private fun showSnackbar(msg : String){
+    private fun showSnackbar(msg: String) {
         snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_LONG)
         snackbar.show()
     }
 
+    private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("http://api.weatherapi.com/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private fun currentCity(file: String, city: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(CurrentApi::class.java)
+                .getCurrent(file, "cf91e562d2444d5d8e303730231810", city)
+            val rsp = call.body()
+            Log.d("body", rsp.toString())
+            Log.d("message", call.message())
+            Log.d("message", call.raw().toString())
+            if (call.isSuccessful) {
+                val tempC = rsp?.current?.tempC ?: 0
+                showSnackbar("La temperatura en $city es $tempC")
+            } else {
+                showSnackbar("Ha ocurrido un error!")
+            }
+        }
+    }
 }
