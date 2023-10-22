@@ -46,12 +46,6 @@ class TeamsDashboardFragment : Fragment() {
     ): View? {
         v = inflater.inflate(R.layout.fragment_teams_dashboard, container, false)
 
-
-        currentCity("current.json", "London")
-
-
-
-
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (prefs.getString("lang", "es") == "en") {
             val locale = Locale("en")
@@ -140,27 +134,4 @@ class TeamsDashboardFragment : Fragment() {
         snackbar.show()
     }
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("http://api.weatherapi.com/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private fun currentCity(file: String, city: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(CurrentApi::class.java)
-                .getCurrent(file, "cf91e562d2444d5d8e303730231810", city)
-            val rsp = call.body()
-            Log.d("body", rsp.toString())
-            Log.d("message", call.message())
-            Log.d("message", call.raw().toString())
-            if (call.isSuccessful) {
-                val tempC = rsp?.current?.tempC ?: 0
-                showSnackbar("La temperatura en $city es $tempC")
-            } else {
-                showSnackbar("Ha ocurrido un error!")
-            }
-        }
-    }
 }

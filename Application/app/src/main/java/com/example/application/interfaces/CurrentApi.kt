@@ -11,6 +11,7 @@ public interface CurrentApi {
     suspend fun getCurrent(
         @Url url: String,
         @Query("key") key: String,
-        @Query("q") q: String
+        @Query("q") q: String,
+        @Query("lang") lang: String
     ) : Response<CurrentResponse>
 }
