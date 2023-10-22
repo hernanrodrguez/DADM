@@ -46,7 +46,15 @@ class ForecastDashboardFragment : Fragment() {
 
         lifecycleScope.launch {
             val forecastsList = viewModel.getForecasts()
-            adapter = ForecastAdapter(forecastsList)
+            adapter = ForecastAdapter(
+                forecastsList
+            ) {
+                val action =
+                    ForecastDashboardFragmentDirections.actionForecastDashboardFragmentToForecastDetailFragment(
+                        forecastsList[it]
+                    )
+                findNavController().navigate(action)
+            }
             for (forecast in forecastsList) {
                 Log.d("lifecycleScope", forecast.location.name)
             }

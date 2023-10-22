@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ForecastDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="405dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageViewToday"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="45dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/textViewCityName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Hoy: Buenos Aires, Argentina"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/textViewTodayDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Despejado"
+                android:textSize="14sp"/>
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="350dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal">
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="4dp"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvMinTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="Mínima"
+                            android:textSize="11sp"/>
+
+                        <TextView
+                            android:id="@+id/textViewMinTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="25°C"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:paddingTop="10dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvMaxTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Máxima"
+                            android:textAlignment="center"
+                            android:textSize="11sp"/>
+
+                        <TextView
+                            android:id="@+id/textViewMaxTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="30°C"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:paddingTop="10dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvHumidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Humedad"
+                            android:textAlignment="center"
+                            android:textSize="11sp"/>
+
+                        <TextView
+                            android:id="@+id/textViewHumidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="50%"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:paddingTop="10dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="4dp"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvWind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="Vel. Viento"
+                            android:textSize="11sp"/>
+
+                        <TextView
+                            android:id="@+id/textViewWind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2km/h"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:paddingTop="10dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRain"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prob. Lluvia"
+                            android:textAlignment="center"
+                            android:textSize="11sp"/>
+
+                        <TextView
+                            android:id="@+id/textViewRain"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="75%"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:paddingTop="10dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvSnow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prob. Nevada"
+                            android:textAlignment="center"
+                            android:textSize="11sp"/>
+
+                        <TextView
+                            android:id="@+id/textViewSnow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0%"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:paddingTop="10dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pronóstico por hora:"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="14sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recHours"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pronóstico extendido:"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="14sp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recDays"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -67,5 +67,18 @@
         android:id="@+id/forecastDashboardFragment"
         android:name="com.example.application.fragments.ForecastDashboardFragment"
         android:label="fragment_forecast_dashboard"
-        tools:layout="@layout/fragment_forecast_dashboard" />
+        tools:layout="@layout/fragment_forecast_dashboard" >
+        <action
+            android:id="@+id/action_forecastDashboardFragment_to_forecastDetailFragment"
+            app:destination="@id/forecastDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forecastDetailFragment"
+        android:name="com.example.application.fragments.ForecastDetailFragment"
+        android:label="fragment_forecast_detail"
+        tools:layout="@layout/fragment_forecast_detail" >
+        <argument
+            android:name="forecast"
+            app:argType="com.example.application.entities.ForecastResponse" />
+    </fragment>
 </navigation>

@@ -13,7 +13,8 @@ import com.example.application.entities.City
 import com.example.application.entities.ForecastResponse
 
 class ForecastAdapter (
-    var forecastList: MutableList<ForecastResponse>
+    var forecastList: MutableList<ForecastResponse>,
+    var onClick: (Int) -> Unit
 ) : RecyclerView.Adapter<ForecastAdapter.ForecastHolder>() {
 
     class ForecastHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -51,7 +52,7 @@ class ForecastAdapter (
         }
 
         fun getCard(): CardView {
-            return view.findViewById(R.id.cardCity)
+            return view.findViewById(R.id.cardForecast)
         }
     }
 
@@ -68,7 +69,9 @@ class ForecastAdapter (
         holder.setDescription(forecastList[i].forecast.forecastDays[0].day.condition.text)
         holder.setRain(forecastList[i].forecast.forecastDays[0].day.dailyChanceOfRain)
         holder.setSnow(forecastList[i].forecast.forecastDays[0].day.dailyChanceOfSnow)
-
+        holder.getCard().setOnClickListener {
+            onClick(i)
+        }
     }
 
     override fun getItemCount(): Int {

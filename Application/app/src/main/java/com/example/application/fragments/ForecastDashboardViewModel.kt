@@ -9,7 +9,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ForecastDashboardViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
     val forecastList: MutableList<ForecastResponse> = mutableListOf()
 
     private fun getRetrofit(): Retrofit {
@@ -34,7 +33,7 @@ class ForecastDashboardViewModel : ViewModel() {
     private suspend fun forecastCity(cityName: String) {
 
         val call = getRetrofit().create(CurrentApi::class.java)
-            .getForecast("forecast.json", "cf91e562d2444d5d8e303730231810", cityName, 1, "no", "no", "es")
+            .getForecast("forecast.json", "cf91e562d2444d5d8e303730231810", cityName, 4, "no", "no", "es")
         val rsp = call.body()
         if (call.isSuccessful) {
             val forecast = ForecastResponse(rsp?.location!!, rsp?.current!!, rsp?.forecast!!)

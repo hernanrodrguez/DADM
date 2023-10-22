@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardDay"
+    android:layout_marginVertical="2dp"
+    android:layout_marginHorizontal="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dp">
+
+    <TextView
+        android:id="@+id/textViewDay"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        tools:text="Lunes" />
+
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="3dp"
+        android:id="@+id/imageViewForecast"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
+
+    <TextView
+        android:id="@+id/textViewTempMinMax"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        tools:text="20°C/25°C" />
+
+    <TextView
+        android:id="@+id/textViewRain"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        tools:text="50%" />
+
+    <TextView
+        android:id="@+id/textViewWind"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        tools:text="5km/h" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
