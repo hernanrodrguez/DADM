@@ -12,7 +12,8 @@ import com.example.application.R
 import com.example.application.entities.City
 
 class CityAdapter (
-    var cityList: MutableList<City>
+    var cityList: MutableList<City>,
+    var onClick: (Int) -> Unit
 ) : RecyclerView.Adapter<CityAdapter.CityHolder>(){
 
     class CityHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -57,10 +58,10 @@ class CityAdapter (
         holder.setHumFeel(cityList[position].humidity, cityList[position].feelsLike)
         holder.setAvatar(cityList[position].conditionImgUrl)
         holder.setDescription(cityList[position].condition)
-        /*holder.getCard().setOnClickListener {
+        holder.getCard().setOnClickListener {
             onClick(position)
         }
-        holder.getCard().setOnLongClickListener {
+        /*holder.getCard().setOnLongClickListener {
             onLongClick(position)
             true
         }*/

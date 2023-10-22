@@ -49,5 +49,18 @@
         android:id="@+id/citiesDashboardFragment"
         android:name="com.example.application.fragments.CitiesDashboardFragment"
         android:label="fragment_cities_dashboard"
-        tools:layout="@layout/fragment_cities_dashboard" />
+        tools:layout="@layout/fragment_cities_dashboard" >
+        <action
+            android:id="@+id/action_citiesDashboardFragment_to_cityCurrentDetailFragment"
+            app:destination="@id/cityCurrentDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cityCurrentDetailFragment"
+        android:name="com.example.application.fragments.CityCurrentDetailFragment"
+        android:label="fragment_city_current_detail"
+        tools:layout="@layout/fragment_city_current_detail" >
+        <argument
+            android:name="city"
+            app:argType="com.example.application.entities.City" />
+    </fragment>
 </navigation>

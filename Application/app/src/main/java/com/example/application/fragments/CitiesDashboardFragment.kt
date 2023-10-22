@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.application.R
@@ -49,7 +50,15 @@ class CitiesDashboardFragment : Fragment() {
 
         lifecycleScope.launch {
             val citiesList = viewModel.getCities()
-            adapter = CityAdapter(citiesList)
+            adapter = CityAdapter(
+                citiesList
+            ) {
+                val action =
+                    CitiesDashboardFragmentDirections.actionCitiesDashboardFragmentToCityCurrentDetailFragment(
+                        citiesList[it]
+                    )
+                findNavController().navigate(action)
+            }
             for (city in citiesList) {
                 Log.d("lifecycleScope", city.name)
             }
