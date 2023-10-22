@@ -63,4 +63,9 @@
             android:name="city"
             app:argType="com.example.application.entities.City" />
     </fragment>
+    <fragment
+        android:id="@+id/forecastDashboardFragment"
+        android:name="com.example.application.fragments.ForecastDashboardFragment"
+        android:label="fragment_forecast_dashboard"
+        tools:layout="@layout/fragment_forecast_dashboard" />
 </navigation>

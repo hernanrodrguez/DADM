@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="450dp"
             android:orientation="vertical">
 
             <ImageView
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Despajado"
+                android:text="Despejado"
                 android:textSize="15sp"/>
 
 
@@ -47,7 +47,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="400dp"
-            android:layout_height="120dp"
+            android:layout_height="1000dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="275dp">
 
@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:text="25°C"
                         android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:textSize="35sp"
                         android:paddingTop="10dp"/>
 
                 </LinearLayout>
@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:text="75%"
                         android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:textSize="35sp"
                         android:paddingTop="10dp"/>
 
                 </LinearLayout>
@@ -120,7 +120,7 @@
                         android:id="@+id/tvFeelsLike"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sensación Térmica"
+                        android:text="S. Térmica"
                         android:textAlignment="center"
                         android:textSize="18sp"/>
 
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:text="26°C"
                         android:textStyle="bold"
-                        android:textSize="20sp"
+                        android:textSize="35sp"
                         android:paddingTop="10dp"/>
 
                 </LinearLayout>
@@ -139,14 +139,24 @@
 
         </androidx.cardview.widget.CardView>
 
+
+
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginTop="45dp">
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/textViewLocalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="5dp"
+            android:text="Hora local: 16:00"
+            android:textSize="12sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -180,7 +190,7 @@
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:src="@drawable/baseline_stadium_24"/>
+                android:src="@drawable/baseline_scale_24"/>
 
             <TextView
                 android:id="@+id/textViewPressure"
@@ -261,6 +271,14 @@
                 android:text="Índice UV: 1"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewLastUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Actualizado: 16:00"
+            android:textSize="12sp"/>
 
     </LinearLayout>
 

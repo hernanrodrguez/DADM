@@ -1,5 +1,6 @@
 package com.example.application.fragments
 
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.example.application.R
 import com.example.application.entities.City
@@ -31,6 +33,8 @@ class CityCurrentDetailFragment : Fragment() {
     private lateinit var textViewPrecipitation : TextView
     private lateinit var textViewClouds : TextView
     private lateinit var textViewUV : TextView
+    private lateinit var textViewLastUpdate : TextView
+    private lateinit var textViewLocalTime : TextView
     private lateinit var imageViewCurrent: ImageView
 
     private lateinit var viewModel: CityCurrentDetailViewModel
@@ -51,6 +55,8 @@ class CityCurrentDetailFragment : Fragment() {
         textViewPrecipitation = v.findViewById(R.id.textViewPrecipitation)
         textViewClouds = v.findViewById(R.id.textViewClouds)
         textViewUV = v.findViewById(R.id.textViewUV)
+        textViewLastUpdate = v.findViewById(R.id.textViewLastUpdate)
+        textViewLocalTime = v.findViewById(R.id.textViewLocalTime)
 
         imageViewCurrent = v.findViewById(R.id.imageViewCurrent)
 
@@ -64,6 +70,7 @@ class CityCurrentDetailFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
         super.onStart()
         arg = CityCurrentDetailFragmentArgs.fromBundle(requireArguments()).city
@@ -78,6 +85,8 @@ class CityCurrentDetailFragment : Fragment() {
         textViewPrecipitation.text = "Precipitación: " + arg.precipitation.toString() + " mm"
         textViewClouds.text = "Cobertura de nubes: " + arg.cloudCover.toString() + "%"
         textViewUV.text = "Índice UV: " + arg.uvIndex.toString()
+        textViewLastUpdate.text = "Actualizado: " + viewModel.unixToText(arg.lastUpdated.toLong(), "HH:mm", arg.tz)
+        textViewLocalTime.text = "Hora local: " + viewModel.unixToText(arg.localTime.toLong(), "HH:mm", arg.tz)
         Glide.with(v).load("https:" + arg.conditionImgUrl.replace("64x64", "128x128")).into(imageViewCurrent)
     }
 

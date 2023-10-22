@@ -1,7 +1,10 @@
 package com.example.application.entities
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Current(
     @SerializedName("last_updated_epoch") var lastUpdatedEpoch: Int,
     @SerializedName("last_updated") var lastUpdated: String,
@@ -26,4 +29,4 @@ data class Current(
     @SerializedName("uv") var uv: Float,
     @SerializedName("gust_mph") var gust_mph: Float,
     @SerializedName("gust_kph") var gust_kph: Float
-)
+) : Parcelable
