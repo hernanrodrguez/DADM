@@ -70,4 +70,11 @@ class City(
             this.windDir = ""
         }
     }
+    fun setSearch(searchCity: SearchCity?) {
+        if(searchCity != null) {
+            this.name = searchCity.name
+            this.region = searchCity.region
+            this.country = searchCity.country
+        }
+    }
 }

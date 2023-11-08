@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_citiesDashboardFragment_to_cityCurrentDetailFragment"
             app:destination="@id/cityCurrentDetailFragment" />
+        <action
+            android:id="@+id/action_citiesDashboardFragment_to_addCityFragment"
+            app:destination="@id/addCityFragment" />
     </fragment>
     <fragment
         android:id="@+id/cityCurrentDetailFragment"
@@ -81,4 +84,9 @@
             android:name="forecast"
             app:argType="com.example.application.entities.ForecastResponse" />
     </fragment>
+    <fragment
+        android:id="@+id/addCityFragment"
+        android:name="com.example.application.fragments.AddCityFragment"
+        android:label="fragment_add_city"
+        tools:layout="@layout/fragment_add_city" />
 </navigation>

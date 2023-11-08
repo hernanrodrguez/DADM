@@ -34,14 +34,4 @@ class SplashActivity : AppCompatActivity() {
             , SPLASH_TIME_OUT)
     }
 
-    override fun onStart() {
-        super.onStart()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        if(prefs.getBoolean("theme", true)){
-            setTheme(R.style.Base_Theme_Application)
-        } else {
-            setTheme(R.style.Theme_Application)
-        }
-
-    }
 }

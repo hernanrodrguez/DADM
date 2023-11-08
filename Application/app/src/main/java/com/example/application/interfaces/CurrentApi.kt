@@ -2,6 +2,8 @@ package com.example.application.interfaces
 
 import com.example.application.entities.CurrentResponse
 import com.example.application.entities.ForecastResponse
+import com.example.application.entities.SearchCity
+import com.example.application.entities.SearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -26,4 +28,12 @@ public interface CurrentApi {
         @Query("alerts") alerts: String,
         @Query("lang") lang: String
     ) : Response<ForecastResponse>
+
+    @GET
+    suspend fun getSearch(
+        @Url url: String,
+        @Query("key") key: String,
+        @Query("q") q: String,
+        @Query("lang") lang: String
+    ) : Response<MutableList<SearchCity>>
 }

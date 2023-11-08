@@ -17,6 +17,7 @@ import com.example.application.adapters.TeamAdapter
 import com.example.application.entities.City
 import com.example.application.entities.Team
 import com.example.application.interfaces.CurrentApi
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ class CitiesDashboardFragment : Fragment() {
     lateinit var v: View
     private lateinit var recCities: RecyclerView
     private lateinit var adapter: CityAdapter
+    private lateinit var fab: FloatingActionButton
 
     private lateinit var viewModel: CitiesDashboardViewModel
 
@@ -40,6 +42,13 @@ class CitiesDashboardFragment : Fragment() {
         v = inflater.inflate(R.layout.fragment_cities_dashboard, container, false)
 
         recCities = v.findViewById(R.id.recCities)
+        fab = v.findViewById(R.id.fab)
+
+        fab.setOnClickListener {
+            val action =
+                CitiesDashboardFragmentDirections.actionCitiesDashboardFragmentToAddCityFragment()
+            findNavController().navigate(action)
+        }
 
         return v
     }
