@@ -1,5 +1,7 @@
 package com.example.application.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +19,8 @@ import com.example.application.adapters.ForecastAdapter
 import kotlinx.coroutines.launch
 
 class ForecastDashboardFragment : Fragment() {
+
+    private val PREF_NAME = "myPreferences"
 
     companion object {
         fun newInstance() = ForecastDashboardFragment()
@@ -44,8 +48,12 @@ class ForecastDashboardFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ForecastDashboardViewModel::class.java)
 
+        val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val citiesSet = sharedPref.getStringSet("CITIES", emptySet())
+        val citiesList : List<String> = citiesSet!!.toList()
+
         lifecycleScope.launch {
-            val forecastsList = viewModel.getForecasts()
+            val forecastsList = viewModel.getForecasts(citiesList)
             adapter = ForecastAdapter(
                 forecastsList
             ) {

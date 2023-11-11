@@ -1,7 +1,11 @@
 package com.example.application.fragments
 
+import android.app.AlertDialog
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
+import com.example.application.R
 import com.example.application.entities.City
 import com.example.application.interfaces.CurrentApi
 import retrofit2.Retrofit
@@ -11,6 +15,9 @@ class AddCityViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 
     val citiesList: MutableList<City> = mutableListOf()
+
+    val currentHint = MutableLiveData<String>()
+    var viewState : MutableLiveData<String> = MutableLiveData()
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()

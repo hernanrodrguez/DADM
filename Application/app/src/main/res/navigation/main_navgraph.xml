@@ -88,5 +88,9 @@
         android:id="@+id/addCityFragment"
         android:name="com.example.application.fragments.AddCityFragment"
         android:label="fragment_add_city"
-        tools:layout="@layout/fragment_add_city" />
+        tools:layout="@layout/fragment_add_city" >
+        <action
+            android:id="@+id/action_addCityFragment_to_cityCurrentDetailFragment"
+            app:destination="@id/cityCurrentDetailFragment" />
+    </fragment>
 </navigation>

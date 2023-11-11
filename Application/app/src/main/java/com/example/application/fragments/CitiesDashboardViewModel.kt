@@ -1,12 +1,16 @@
 package com.example.application.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.application.entities.City
 import com.example.application.interfaces.CurrentApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,14 +27,12 @@ class CitiesDashboardViewModel : ViewModel() {
             .build()
     }
 
-    suspend fun getCities(): MutableList<City> {
-        currentCity("London")
-        currentCity("Buenos Aires")
-        currentCity("Paris")
-        currentCity("Madrid")
+    suspend fun getCities(cities: List<String>): MutableList<City> {
+        citiesList.clear()
 
-        for (city in citiesList) {
-            Log.d("citiesList", city.name)
+        for (city in cities) {
+            currentCity(city)
+            Log.d("citiesList", city)
         }
         return citiesList
     }

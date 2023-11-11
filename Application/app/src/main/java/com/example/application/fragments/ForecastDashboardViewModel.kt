@@ -18,14 +18,12 @@ class ForecastDashboardViewModel : ViewModel() {
             .build()
     }
 
-    suspend fun getForecasts(): MutableList<ForecastResponse> {
-        forecastCity("London")
-        forecastCity("Buenos Aires")
-        forecastCity("Paris")
-        forecastCity("Madrid")
+    suspend fun getForecasts(cities: List<String>): MutableList<ForecastResponse> {
+        forecastList.clear()
 
-        for (forecast in forecastList) {
-            Log.d("forecastList", forecast.location.name)
+        for (city in cities) {
+            forecastCity(city)
+            Log.d("forecastList", city)
         }
         return forecastList
     }

@@ -1,5 +1,7 @@
 package com.example.application.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.application.R
@@ -23,6 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CitiesDashboardFragment : Fragment() {
+
+    private val PREF_NAME = "myPreferences"
 
     companion object {
         fun newInstance() = CitiesDashboardFragment()
@@ -57,8 +62,12 @@ class CitiesDashboardFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(CitiesDashboardViewModel::class.java)
 
+        val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val citiesSet = sharedPref.getStringSet("CITIES", mutableSetOf())
+        val citiesList : List<String> = citiesSet!!.toList()
+
         lifecycleScope.launch {
-            val citiesList = viewModel.getCities()
+            val citiesList = viewModel.getCities(citiesList)
             adapter = CityAdapter(
                 citiesList
             ) {
