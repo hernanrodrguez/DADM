@@ -21,7 +21,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.application.R
 import com.example.application.adapters.CityAdapter
 import com.example.application.adapters.CitySearchAdapter
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 
 class AddCityFragment : Fragment() {
@@ -39,7 +41,6 @@ class AddCityFragment : Fragment() {
 
     private lateinit var viewModel: AddCityViewModel
 
-    @SuppressLint("MutatingSharedPrefs")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,11 +63,18 @@ class AddCityFragment : Fragment() {
                             .setCancelable(true)
                             .setPositiveButton("Agregar ciudad") { dialog, id ->
                                 val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                                val citiesSet = sharedPref.getStringSet("CITIES", mutableSetOf())
-                                citiesSet!!.add(citiesList[it].name)
+                                var json = sharedPref.getString("myList", "")
 
-                                val editor = sharedPref.edit()
-                                editor.putStringSet("CITIES", citiesSet).apply()
+                                val list : MutableList<String> = if (json.isNullOrEmpty()) {
+                                    mutableListOf()
+                                } else {
+                                    Gson().fromJson(json, object : TypeToken<MutableList<String>>() {}.type)
+                                }
+
+                                list.add(citiesList[it].name)
+
+                                json = Gson().toJson(list)
+                                sharedPref.edit().putString("myList", json).apply()
 
                                 val action = AddCityFragmentDirections.actionAddCityFragmentToCityCurrentDetailFragment(citiesList[it])
                                 findNavController().navigate(action)
@@ -86,8 +94,6 @@ class AddCityFragment : Fragment() {
                 false
             }
         }
-
-
         return v
     }
 
@@ -95,10 +101,6 @@ class AddCityFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(AddCityViewModel::class.java)
         // TODO: Use the ViewModel
-    }
-
-    private fun addCityDialog() {
-
     }
 
 }

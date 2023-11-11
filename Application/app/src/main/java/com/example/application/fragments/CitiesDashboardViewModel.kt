@@ -18,8 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class CitiesDashboardViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 
-    val citiesList: MutableList<City> = mutableListOf()
-
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://api.weatherapi.com/v1/")
@@ -28,17 +26,16 @@ class CitiesDashboardViewModel : ViewModel() {
     }
 
     suspend fun getCities(cities: List<String>): MutableList<City> {
-        citiesList.clear()
-
+        val citiesList: MutableList<City> = mutableListOf()
         for (city in cities) {
-            currentCity(city)
+            citiesList.add(currentCity(city))
             Log.d("citiesList", city)
         }
         return citiesList
     }
 
-    private suspend fun currentCity(cityName: String) {
-        var city = City()
+    private suspend fun currentCity(cityName: String) : City {
+        val city = City()
 
         val call = getRetrofit().create(CurrentApi::class.java)
             .getCurrent("current.json", "cf91e562d2444d5d8e303730231810", cityName, "es")
@@ -47,7 +44,7 @@ class CitiesDashboardViewModel : ViewModel() {
             city.setCurrent(rsp?.location, rsp?.current)
             Log.d("CoroutineScope", city.name + " OK")
             Log.d("condition", city.condition)
-            citiesList.add(city)
         }
+        return city
     }
 }

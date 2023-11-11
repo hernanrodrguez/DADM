@@ -21,6 +21,8 @@ import com.example.application.entities.City
 import com.example.application.entities.Team
 import com.example.application.interfaces.CurrentApi
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,25 +65,38 @@ class CitiesDashboardFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(CitiesDashboardViewModel::class.java)
 
         val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val citiesSet = sharedPref.getStringSet("CITIES", mutableSetOf())
-        val citiesList : List<String> = citiesSet!!.toList()
+
+        //sharedPref.edit().clear().apply()
+
+        val json = sharedPref.getString("myList", "")
+
+        val citiesList : MutableList<String> = if (json.isNullOrEmpty()) {
+            mutableListOf()
+        } else {
+            Gson().fromJson(json, object : TypeToken<MutableList<String>>() {}.type)
+        }
 
         lifecycleScope.launch {
-            val citiesList = viewModel.getCities(citiesList)
-            adapter = CityAdapter(
-                citiesList
-            ) {
-                val action =
-                    CitiesDashboardFragmentDirections.actionCitiesDashboardFragmentToCityCurrentDetailFragment(
-                        citiesList[it]
-                    )
-                findNavController().navigate(action)
-            }
-            for (city in citiesList) {
-                Log.d("lifecycleScope", city.name)
-            }
+
+            Log.d("LIST SIZE", citiesList.size.toString())
+            if(citiesList.size > 0) {
+                val cities = viewModel.getCities(citiesList)
+                adapter = CityAdapter(
+                    cities
+                ) {
+                    val action =
+                        CitiesDashboardFragmentDirections.actionCitiesDashboardFragmentToCityCurrentDetailFragment(
+                            cities[it]
+                        )
+                    findNavController().navigate(action)
+                }
+                for (city in cities) {
+                    Log.d("lifecycleScope", city.name)
+                }
+
             recCities.layoutManager = LinearLayoutManager(context)
             recCities.adapter = adapter
+            }
         }
 
     }

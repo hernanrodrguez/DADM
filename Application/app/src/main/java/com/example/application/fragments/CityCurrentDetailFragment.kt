@@ -1,5 +1,7 @@
 package com.example.application.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -19,6 +21,8 @@ import com.example.application.entities.Team
 import kotlinx.coroutines.launch
 
 class CityCurrentDetailFragment : Fragment() {
+
+    private val PREF_NAME = "myPreferences"
 
     companion object {
         fun newInstance() = CityCurrentDetailFragment()
@@ -60,11 +64,9 @@ class CityCurrentDetailFragment : Fragment() {
         textViewUV = v.findViewById(R.id.textViewUV)
         textViewLastUpdate = v.findViewById(R.id.textViewLastUpdate)
         textViewLocalTime = v.findViewById(R.id.textViewLocalTime)
-
         imageViewCurrent = v.findViewById(R.id.imageViewCurrent)
 
         return v
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -79,6 +81,7 @@ class CityCurrentDetailFragment : Fragment() {
         arg = CityCurrentDetailFragmentArgs.fromBundle(requireArguments()).city
 
         if(arg.localTime == 0) {
+
             lifecycleScope.launch {
                 Log.d("DETAIL", "arg.localTime == 0")
                 arg = viewModel.getCity(arg.name)

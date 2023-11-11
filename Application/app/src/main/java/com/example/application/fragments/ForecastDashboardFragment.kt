@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.application.R
 import com.example.application.adapters.CityAdapter
 import com.example.application.adapters.ForecastAdapter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 
 class ForecastDashboardFragment : Fragment() {
@@ -49,25 +51,34 @@ class ForecastDashboardFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ForecastDashboardViewModel::class.java)
 
         val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val citiesSet = sharedPref.getStringSet("CITIES", emptySet())
-        val citiesList : List<String> = citiesSet!!.toList()
+        val json = sharedPref.getString("myList", "")
+
+        val citiesList : MutableList<String> = if (json.isNullOrEmpty()) {
+            mutableListOf()
+        } else {
+            Gson().fromJson(json, object : TypeToken<MutableList<String>>() {}.type)
+        }
 
         lifecycleScope.launch {
-            val forecastsList = viewModel.getForecasts(citiesList)
-            adapter = ForecastAdapter(
-                forecastsList
-            ) {
-                val action =
-                    ForecastDashboardFragmentDirections.actionForecastDashboardFragmentToForecastDetailFragment(
-                        forecastsList[it]
-                    )
-                findNavController().navigate(action)
+            Log.d("LIST SIZE", citiesList.size.toString())
+            if(citiesList.size > 0) {
+                val forecastsList = viewModel.getForecasts(citiesList)
+                adapter = ForecastAdapter(
+                    forecastsList
+                ) {
+                    val action =
+                        ForecastDashboardFragmentDirections.actionForecastDashboardFragmentToForecastDetailFragment(
+                            forecastsList[it]
+                        )
+                    findNavController().navigate(action)
+                }
+                for (forecast in forecastsList) {
+                    Log.d("lifecycleScope", forecast.location.name)
+                }
+                recForecast.layoutManager = LinearLayoutManager(context)
+                recForecast.adapter = adapter
             }
-            for (forecast in forecastsList) {
-                Log.d("lifecycleScope", forecast.location.name)
-            }
-            recForecast.layoutManager = LinearLayoutManager(context)
-            recForecast.adapter = adapter
+
         }
     }
 
