@@ -1,12 +1,34 @@
 package com.example.application.fragments
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Looper
+import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.application.activities.MainActivity
 import com.example.application.entities.City
 import com.example.application.interfaces.CurrentApi
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,6 +45,10 @@ class CitiesDashboardViewModel : ViewModel() {
             .baseUrl("http://api.weatherapi.com/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    suspend fun getLocation(latitude: Double, longitude: Double): City {
+        return currentCity("$latitude,$longitude")
     }
 
     suspend fun getCities(cities: List<String>): MutableList<City> {
@@ -47,4 +73,5 @@ class CitiesDashboardViewModel : ViewModel() {
         }
         return city
     }
+
 }

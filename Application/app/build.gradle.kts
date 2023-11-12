@@ -51,6 +51,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("com.google.android.gms:play-services-location:17.0.0")
+    implementation ("com.google.android.gms:play-services-maps:17.0.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
     implementation("androidx.preference:preference:1.2.0")
     testImplementation("junit:junit:4.13.2")

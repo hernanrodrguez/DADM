@@ -2,24 +2,34 @@ package com.example.application.fragments
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.motion.widget.Debug.getLocation
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.application.R
+import com.example.application.activities.MainActivity
 import com.example.application.adapters.CityAdapter
 import com.example.application.adapters.TeamAdapter
 import com.example.application.entities.City
 import com.example.application.entities.Team
 import com.example.application.interfaces.CurrentApi
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -36,9 +46,13 @@ class CitiesDashboardFragment : Fragment() {
     }
 
     lateinit var v: View
+    var latitude: Double? = null
+    var longitude: Double? = null
     private lateinit var recCities: RecyclerView
     private lateinit var adapter: CityAdapter
     private lateinit var fab: FloatingActionButton
+
+    private lateinit var itemCity: CardView
 
     private lateinit var viewModel: CitiesDashboardViewModel
 
@@ -50,6 +64,7 @@ class CitiesDashboardFragment : Fragment() {
 
         recCities = v.findViewById(R.id.recCities)
         fab = v.findViewById(R.id.fab)
+        itemCity = v.findViewById(R.id.cvLocation)
 
         fab.setOnClickListener {
             val action =
@@ -65,9 +80,7 @@ class CitiesDashboardFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(CitiesDashboardViewModel::class.java)
 
         val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
         //sharedPref.edit().clear().apply()
-
         val json = sharedPref.getString("myList", "")
 
         val citiesList : MutableList<String> = if (json.isNullOrEmpty()) {
@@ -76,8 +89,9 @@ class CitiesDashboardFragment : Fragment() {
             Gson().fromJson(json, object : TypeToken<MutableList<String>>() {}.type)
         }
 
-        lifecycleScope.launch {
+        (activity as MainActivity).getLastLocation()
 
+        lifecycleScope.launch {
             Log.d("LIST SIZE", citiesList.size.toString())
             if(citiesList.size > 0) {
                 val cities = viewModel.getCities(citiesList)
@@ -93,12 +107,40 @@ class CitiesDashboardFragment : Fragment() {
                 for (city in cities) {
                     Log.d("lifecycleScope", city.name)
                 }
+                recCities.layoutManager = LinearLayoutManager(context)
+                recCities.adapter = adapter
 
-            recCities.layoutManager = LinearLayoutManager(context)
-            recCities.adapter = adapter
+                val locationCity: City
+                val (latitude, longitude) = (activity as MainActivity).readLastLocation()
+                if(latitude != null && longitude != null){
+                    locationCity = viewModel.getLocation(latitude, longitude)
+                    setLocationCard(locationCity)
+                } else {
+                    Log.d("LOCATION", "No pude acceder a la ubicacion")
+                }
             }
         }
-
     }
 
+    private fun setLocationCard(city: City){
+        val imageViewCurrent: ImageView = itemCity.findViewById(R.id.imageViewCurrent)
+        val textViewDescription: TextView = itemCity.findViewById(R.id.textViewDescription)
+        val textViewTempC: TextView = itemCity.findViewById(R.id.textViewTempC)
+        val textViewHumFeel: TextView = itemCity.findViewById(R.id.textViewHumFeel)
+        val textViewCityName: TextView = itemCity.findViewById(R.id.textViewCityName)
+
+        Glide.with(v).load("https:" + city.conditionImgUrl.replace("64x64", "128x128")).into(imageViewCurrent)
+        textViewDescription.text = city.condition
+        textViewTempC.text = "${city.tempC}°C"
+        textViewHumFeel.text = "H: ${city.humidity} - ST: ${city.feelsLike}°C"
+        textViewCityName.text = "${city.name}, ${city.country}"
+
+        itemCity.setOnClickListener {
+            val action =
+                CitiesDashboardFragmentDirections.actionCitiesDashboardFragmentToCityCurrentDetailFragment(
+                    city
+                )
+            findNavController().navigate(action)
+        }
+    }
 }
