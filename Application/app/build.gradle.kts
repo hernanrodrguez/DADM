@@ -79,4 +79,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")
 
+    implementation("com.androidplot:androidplot-core:1.5.10")
+
 }
