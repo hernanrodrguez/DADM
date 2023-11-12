@@ -12,8 +12,7 @@ import com.example.application.R
 
 class SplashActivity : AppCompatActivity() {
 
-    private val SPLASH_TIME_OUT:Long = 2000
-    private val PREF_NAME = "myPreferences"
+    private val SPLASH_TIME_OUT:Long = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,13 +21,13 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed(
 
             {
-                val sharedPref: SharedPreferences = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                /*val sharedPref: SharedPreferences = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 val str = sharedPref.getString("USER", "")
-                if(str == "") {
+                if(str == "") {*/
                     startActivity(Intent(this, LoginActivity::class.java))
-                } else {
+                /*} else {
                     startActivity(Intent(this, MainActivity::class.java))
-                }
+                }*/
                 finish()
             }
             , SPLASH_TIME_OUT)

@@ -7,8 +7,10 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.preference.PreferenceManager
 import com.example.application.R
@@ -16,96 +18,69 @@ import com.example.application.database.AppDatabase
 import com.example.application.database.TeamDao
 import com.example.application.entities.User
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import java.util.Locale
 
 class LoginActivity : AppCompatActivity() {
 
-    private val PREF_NAME = "myPreferences"
+    private val TAG = "LOGIN"
+
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var btnLogin : Button
+    private lateinit var btnSignUp : Button
     private lateinit var editTextUsername : EditText
     private lateinit var editTextPassword : EditText
     private lateinit var snackbar : Snackbar
-    private lateinit var currentUser : User
-
-    private var db: AppDatabase? = null
-    private var userDao: TeamDao? = null
-
-    private companion object{
-        const val ERROR = -1
-        const val NO_USERNAME = 0
-        const val NO_PASSWORD = 1
-        const val NO_REGISTER = 2
-        const val WRONG_PASSWORD = 3
-        const val LOGIN_OK = 4
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        if(prefs.getString("lang", "es") == "en"){
-            val locale = Locale("en")
-            val config = Configuration(resources.configuration)
-            config.setLocale(locale)
-            resources.updateConfiguration(config, resources.displayMetrics)
-        } else {
-            val systemLocale = Resources.getSystem().configuration.locale
-            // Configura la configuración regional de la aplicación a la configuración regional del sistema
-            val config = Configuration(resources.configuration)
-            config.setLocale(systemLocale)
-            resources.updateConfiguration(config, resources.displayMetrics)
-        }
+        auth = Firebase.auth
 
         btnLogin = findViewById(R.id.btnLogin)
+        btnSignUp = findViewById(R.id.btnSignUp)
         editTextUsername = findViewById(R.id.editTextUsername)
         editTextPassword = findViewById(R.id.editTextPassword)
 
-        btnLogin.text = getString(R.string.login)
-        editTextUsername.hint = getString(R.string.username)
-        editTextPassword.hint = getString(R.string.password)
     }
 
     override fun onStart() {
         super.onStart()
 
-        db = AppDatabase.getInstance(this)
-        userDao = db?.teamDao()
-
-        userDao?.fetchAllUsers()
-
-        val usersList : MutableList<User> = userDao?.fetchAllUsers().orEmpty().filterNotNull().toMutableList()
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            updateUI(currentUser)
+        }
 
         btnLogin.setOnClickListener {
 
-            when (checkCredentials(
-                usersList,
-                editTextUsername.text.toString(),
-                editTextPassword.text.toString()
-            )) {
-                NO_USERNAME -> showSnackbar("Enter username")
+            if(editTextUsername.text.isEmpty()) {
+                showSnackbar("Ingrese su correo electrónico")
+            } else if(editTextPassword.text.isEmpty()) {
+                showSnackbar("Ingrese su constraseña")
+            } else if(editTextPassword.text.length < 6) {
+                showSnackbar("Contraseña invalida")
+            } else if(editTextUsername.text.isNotEmpty() && editTextPassword.text.isNotEmpty()) {
+                signIn(editTextUsername.text.toString(), editTextPassword.text.toString())
+            }
+        }
 
-                NO_PASSWORD -> showSnackbar("Enter password")
-
-                NO_REGISTER -> showSnackbar("Username not registered")
-
-                WRONG_PASSWORD -> showSnackbar("Wrong password")
-
-                LOGIN_OK -> {
-                    val sharedPref: SharedPreferences = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                    val editor = sharedPref.edit()
-
-                    val json: String = GsonBuilder().create().toJson(currentUser)
-                    editor.putString("USER", json).apply()
-
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
-
-                ERROR -> showSnackbar("There was a problem!")
+        btnSignUp.setOnClickListener {
+            if(editTextUsername.text.isEmpty()) {
+                showSnackbar("Ingrese su correo electrónico")
+            } else if(editTextPassword.text.isEmpty()) {
+                showSnackbar("Ingrese su constraseña")
+            } else if(editTextPassword.text.length < 6) {
+                showSnackbar("Contraseña invalida")
+            } else if(editTextUsername.text.isNotEmpty() && editTextPassword.text.isNotEmpty()) {
+                createAccount(editTextUsername.text.toString(), editTextPassword.text.toString())
             }
         }
     }
@@ -115,26 +90,75 @@ class LoginActivity : AppCompatActivity() {
         snackbar.show()
     }
 
-    private fun checkCredentials(list : MutableList<User>, username : String, password : String) : Int {
-        if(username.isEmpty()){
-            return NO_USERNAME
-        }
-        if(password.isEmpty()){
-            return NO_PASSWORD
-        }
-        if(!list.any { user -> user.username == username }){
-            return NO_REGISTER
-        } else {
-            val userExists = list.firstOrNull{ it.username == username }
-            if(userExists != null){
-                currentUser = userExists
-                return if (currentUser.getPassword() == password){
-                    LOGIN_OK
+    private fun createAccount(email: String, password: String) {
+        // [START create_user_with_email]
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success")
+                    val user = auth.currentUser
+                    updateUI(user)
                 } else {
-                    WRONG_PASSWORD
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    showSnackbar("La autenticación falló")
+                    updateUI(null)
                 }
             }
-        }
-        return ERROR
+        // [END create_user_with_email]
     }
+
+    private fun signIn(email: String, password: String) {
+        // [START sign_in_with_email]
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    showSnackbar("La autenticación falló")
+                    updateUI(null)
+                }
+            }
+        // [END sign_in_with_email]
+    }
+
+    private fun sendEmailVerification() {
+        // [START send_email_verification]
+        val user = auth.currentUser!!
+        user.sendEmailVerification()
+            .addOnCompleteListener(this) { task ->
+                showSnackbar("Verifique su casilla de correo")
+            }
+        // [END send_email_verification]
+    }
+
+    private fun updateUI(user: FirebaseUser?) {
+        if(user != null){
+            if(user.isEmailVerified) {
+                val mIntent = Intent(this, MainActivity::class.java)
+                val mBundle = Bundle()
+                mBundle.putString("user", user.uid)
+                mIntent.putExtras(mBundle)
+                Log.d(TAG, "Ya puse el extra")
+                startActivity(mIntent)
+                finish()
+            } else {
+                sendEmailVerification()
+                showSnackbar("Valide su correo y vuelva a ingresar")
+            }
+        } else {
+
+        }
+    }
+
+    private fun reload() {
+    }
+
+
 }

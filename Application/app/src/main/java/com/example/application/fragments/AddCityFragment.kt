@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.application.R
+import com.example.application.activities.MainActivity
 import com.example.application.adapters.CityAdapter
 import com.example.application.adapters.CitySearchAdapter
 import com.google.gson.Gson
@@ -35,6 +36,7 @@ class AddCityFragment : Fragment() {
     }
 
     lateinit var v: View
+    private lateinit var userid: String
     private lateinit var recNewCities: RecyclerView
     private lateinit var adapter: CitySearchAdapter
     private lateinit var etFilterCities : EditText
@@ -46,6 +48,7 @@ class AddCityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_add_city, container, false)
+        userid = (activity as MainActivity).getUser()
 
         recNewCities = v.findViewById(R.id.recNewCities)
         etFilterCities = v.findViewById(R.id.etFilterCities)
@@ -63,7 +66,7 @@ class AddCityFragment : Fragment() {
                             .setCancelable(true)
                             .setPositiveButton("Agregar ciudad") { dialog, id ->
                                 val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                                var json = sharedPref.getString("myList", "")
+                                var json = sharedPref.getString(userid, "")
 
                                 val list : MutableList<String> = if (json.isNullOrEmpty()) {
                                     mutableListOf()
@@ -74,7 +77,7 @@ class AddCityFragment : Fragment() {
                                 list.add(citiesList[it].name)
 
                                 json = Gson().toJson(list)
-                                sharedPref.edit().putString("myList", json).apply()
+                                sharedPref.edit().putString(userid, json).apply()
 
                                 val action = AddCityFragmentDirections.actionAddCityFragmentToCityCurrentDetailFragment(citiesList[it])
                                 findNavController().navigate(action)

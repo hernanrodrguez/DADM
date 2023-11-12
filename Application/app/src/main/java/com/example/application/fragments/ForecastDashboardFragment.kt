@@ -36,6 +36,7 @@ class ForecastDashboardFragment : Fragment() {
     }
 
     lateinit var v: View
+    private lateinit var userid: String
     private lateinit var recForecast: RecyclerView
     private lateinit var adapter: ForecastAdapter
     private lateinit var itemForecast: CardView
@@ -47,6 +48,8 @@ class ForecastDashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_forecast_dashboard, container, false)
+
+        userid = (activity as MainActivity).getUser()
 
         recForecast = v.findViewById(R.id.recForecast)
         itemForecast = v.findViewById(R.id.cvLocationForecast)
@@ -60,7 +63,7 @@ class ForecastDashboardFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ForecastDashboardViewModel::class.java)
 
         val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val json = sharedPref.getString("myList", "")
+        val json = sharedPref.getString(userid, "")
 
         val citiesList : MutableList<String> = if (json.isNullOrEmpty()) {
             mutableListOf()
@@ -92,6 +95,17 @@ class ForecastDashboardFragment : Fragment() {
                 if(latitude != null && longitude != null){
                     locationForecast = viewModel.getLocation(latitude, longitude)
                     if(locationForecast != null) {
+                        setLocationCard(locationForecast)
+                    }
+                } else {
+                    Log.d("LOCATION", "No pude acceder a la ubicacion")
+                }
+            } else {
+                val locationForecast: ForecastResponse?
+                val (latitude, longitude) = (activity as MainActivity).readLastLocation()
+                if (latitude != null && longitude != null) {
+                    locationForecast = viewModel.getLocation(latitude, longitude)
+                    if (locationForecast != null) {
                         setLocationCard(locationForecast)
                     }
                 } else {

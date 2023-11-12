@@ -93,4 +93,9 @@
             android:id="@+id/action_addCityFragment_to_cityCurrentDetailFragment"
             app:destination="@id/cityCurrentDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="com.example.application.fragments.LogoutFragment"
+        android:label="fragment_logout"
+        tools:layout="@layout/fragment_logout" />
 </navigation>

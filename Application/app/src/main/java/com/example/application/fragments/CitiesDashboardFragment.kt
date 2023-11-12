@@ -46,6 +46,7 @@ class CitiesDashboardFragment : Fragment() {
     }
 
     lateinit var v: View
+    private lateinit var userid: String
     var latitude: Double? = null
     var longitude: Double? = null
     private lateinit var recCities: RecyclerView
@@ -61,7 +62,7 @@ class CitiesDashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         v = inflater.inflate(R.layout.fragment_cities_dashboard, container, false)
-
+        
         recCities = v.findViewById(R.id.recCities)
         fab = v.findViewById(R.id.fab)
         itemCity = v.findViewById(R.id.cvLocation)
@@ -72,6 +73,8 @@ class CitiesDashboardFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        userid = (activity as MainActivity).getUser()
+
         return v
     }
 
@@ -81,7 +84,7 @@ class CitiesDashboardFragment : Fragment() {
 
         val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         //sharedPref.edit().clear().apply()
-        val json = sharedPref.getString("myList", "")
+        val json = sharedPref.getString(userid, "")
 
         val citiesList : MutableList<String> = if (json.isNullOrEmpty()) {
             mutableListOf()
@@ -110,6 +113,15 @@ class CitiesDashboardFragment : Fragment() {
                 recCities.layoutManager = LinearLayoutManager(context)
                 recCities.adapter = adapter
 
+                val locationCity: City
+                val (latitude, longitude) = (activity as MainActivity).readLastLocation()
+                if(latitude != null && longitude != null){
+                    locationCity = viewModel.getLocation(latitude, longitude)
+                    setLocationCard(locationCity)
+                } else {
+                    Log.d("LOCATION", "No pude acceder a la ubicacion")
+                }
+            } else {
                 val locationCity: City
                 val (latitude, longitude) = (activity as MainActivity).readLastLocation()
                 if(latitude != null && longitude != null){

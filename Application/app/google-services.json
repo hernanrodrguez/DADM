@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "861717509987",
+    "project_id": "dadmweather",
+    "storage_bucket": "dadmweather.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861717509987:android:04a771f987233a20bb4556",
+        "android_client_info": {
+          "package_name": "com.example.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2OlfZnf3rrtIpBK_bRPVU0MZf_sF2RFE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

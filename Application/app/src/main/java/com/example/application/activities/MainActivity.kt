@@ -10,14 +10,13 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
+import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.application.R
-import com.example.application.fragments.CitiesDashboardFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -29,6 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private val PREF_NAME = "myPreferences"
+    private lateinit var userid: String
 
     val PERMISSION_ID = 42
     lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Log.d("Main Activity", "Ya estoy en MainActivity")
+        userid = intent.extras!!.getString("user").toString()
+        Log.d("Main Activity", "userid: " + userid)
+
         setContentView(R.layout.activity_main)
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -48,6 +52,10 @@ class MainActivity : AppCompatActivity() {
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         bottomNavView = findViewById(R.id.bottom_bar)
         NavigationUI.setupWithNavController(bottomNavView, navHostFragment.navController)
+    }
+
+    fun getUser():String {
+        return userid
     }
 
     fun readLastLocation(): Pair<Double?, Double?> {
