@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.motion.widget.Debug.getLocation
@@ -52,6 +54,8 @@ class CitiesDashboardFragment : Fragment() {
     private lateinit var recCities: RecyclerView
     private lateinit var adapter: CityAdapter
     private lateinit var fab: FloatingActionButton
+    private lateinit var progressBar: ProgressBar
+    private lateinit var llFragCitDash: LinearLayout
 
     private lateinit var itemCity: CardView
 
@@ -65,6 +69,8 @@ class CitiesDashboardFragment : Fragment() {
         
         recCities = v.findViewById(R.id.recCities)
         fab = v.findViewById(R.id.fab)
+        progressBar = v.findViewById(R.id.progressBar)
+        llFragCitDash = v.findViewById(R.id.llFragCitDash)
         itemCity = v.findViewById(R.id.cvLocation)
 
         fab.setOnClickListener {
@@ -95,6 +101,7 @@ class CitiesDashboardFragment : Fragment() {
         (activity as MainActivity).getLastLocation()
 
         lifecycleScope.launch {
+            showProgressBar()
             Log.d("LIST SIZE", citiesList.size.toString())
             if(citiesList.size > 0) {
                 val cities = viewModel.getCities(citiesList)
@@ -131,6 +138,7 @@ class CitiesDashboardFragment : Fragment() {
                     Log.d("LOCATION", "No pude acceder a la ubicacion")
                 }
             }
+            hideProgressBar()
         }
     }
 
@@ -154,5 +162,15 @@ class CitiesDashboardFragment : Fragment() {
                 )
             findNavController().navigate(action)
         }
+    }
+
+    private fun showProgressBar() {
+        llFragCitDash.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+        llFragCitDash.visibility = View.VISIBLE
     }
 }

@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +42,8 @@ class ForecastDashboardFragment : Fragment() {
     private lateinit var recForecast: RecyclerView
     private lateinit var adapter: ForecastAdapter
     private lateinit var itemForecast: CardView
+    private lateinit var progressBarFore: ProgressBar
+    private lateinit var llFragForeDash: LinearLayout
 
     private lateinit var viewModel: ForecastDashboardViewModel
 
@@ -53,6 +57,8 @@ class ForecastDashboardFragment : Fragment() {
 
         recForecast = v.findViewById(R.id.recForecast)
         itemForecast = v.findViewById(R.id.cvLocationForecast)
+        llFragForeDash = v.findViewById(R.id.llFragForeDash)
+        progressBarFore = v.findViewById(R.id.progressBarFore)
 
         return v
 
@@ -72,6 +78,7 @@ class ForecastDashboardFragment : Fragment() {
         }
 
         lifecycleScope.launch {
+            showProgressBar()
             Log.d("LIST SIZE", citiesList.size.toString())
             if(citiesList.size > 0) {
                 val forecastsList = viewModel.getForecasts(citiesList)
@@ -112,6 +119,7 @@ class ForecastDashboardFragment : Fragment() {
                     Log.d("LOCATION", "No pude acceder a la ubicacion")
                 }
             }
+            hideProgressBar()
         }
     }
 
@@ -140,6 +148,16 @@ class ForecastDashboardFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+    }
+
+    private fun showProgressBar() {
+        llFragForeDash.visibility = View.GONE
+        progressBarFore.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBarFore.visibility = View.GONE
+        llFragForeDash.visibility = View.VISIBLE
     }
 
 }
