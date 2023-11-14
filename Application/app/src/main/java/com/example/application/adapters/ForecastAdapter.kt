@@ -14,7 +14,8 @@ import com.example.application.entities.ForecastResponse
 
 class ForecastAdapter (
     var forecastList: MutableList<ForecastResponse>,
-    var onClick: (Int) -> Unit
+    var onClick: (Int) -> Unit,
+    var onLongClick : (Int) -> Unit
 ) : RecyclerView.Adapter<ForecastAdapter.ForecastHolder>() {
 
     class ForecastHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -71,6 +72,10 @@ class ForecastAdapter (
         holder.setSnow(forecastList[i].forecast.forecastDays[0].day.dailyChanceOfSnow)
         holder.getCard().setOnClickListener {
             onClick(i)
+        }
+        holder.getCard().setOnLongClickListener {
+            onLongClick(i)
+            true
         }
     }
 

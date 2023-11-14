@@ -13,7 +13,8 @@ import com.example.application.entities.City
 
 class CityAdapter (
     var cityList: MutableList<City>,
-    var onClick: (Int) -> Unit
+    var onClick: (Int) -> Unit,
+    var onLongClick : (Int) -> Unit
 ) : RecyclerView.Adapter<CityAdapter.CityHolder>(){
 
     class CityHolder(v: View): RecyclerView.ViewHolder(v) {
@@ -61,10 +62,10 @@ class CityAdapter (
         holder.getCard().setOnClickListener {
             onClick(position)
         }
-        /*holder.getCard().setOnLongClickListener {
+        holder.getCard().setOnLongClickListener {
             onLongClick(position)
             true
-        }*/
+        }
     }
 
     override fun getItemCount(): Int {

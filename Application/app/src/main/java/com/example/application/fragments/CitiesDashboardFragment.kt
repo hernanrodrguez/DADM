@@ -1,5 +1,6 @@
 package com.example.application.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -33,6 +34,7 @@ import com.example.application.entities.Team
 import com.example.application.interfaces.CurrentApi
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
@@ -56,6 +58,8 @@ class CitiesDashboardFragment : Fragment() {
     private lateinit var fab: FloatingActionButton
     private lateinit var progressBar: ProgressBar
     private lateinit var llFragCitDash: LinearLayout
+
+    private lateinit var snackbar: Snackbar
 
     private lateinit var itemCity: CardView
 
@@ -89,8 +93,7 @@ class CitiesDashboardFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(CitiesDashboardViewModel::class.java)
 
         val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        //sharedPref.edit().clear().apply()
-        val json = sharedPref.getString(userid, "")
+        var json = sharedPref.getString(userid, "")
 
         val citiesList : MutableList<String> = if (json.isNullOrEmpty()) {
             mutableListOf()
@@ -106,14 +109,37 @@ class CitiesDashboardFragment : Fragment() {
             if(citiesList.size > 0) {
                 val cities = viewModel.getCities(citiesList)
                 adapter = CityAdapter(
-                    cities
-                ) {
-                    val action =
-                        CitiesDashboardFragmentDirections.actionCitiesDashboardFragmentToCityCurrentDetailFragment(
-                            cities[it]
-                        )
-                    findNavController().navigate(action)
-                }
+                    cities,
+                        {
+                        val action =
+                            CitiesDashboardFragmentDirections.actionCitiesDashboardFragmentToCityCurrentDetailFragment(
+                                cities[it]
+                            )
+                        findNavController().navigate(action)
+                    } ,{
+                        val builder = AlertDialog.Builder(context)
+                        builder.setMessage(cities[it].name)
+                            .setCancelable(true)
+                            .setPositiveButton("Eliminar") { dialog, id ->
+                                //teamDao?.delete(cities[it]) // elimina de la bdd (shared preferences ahora)
+
+                                citiesList.removeAt(it)
+                                json = Gson().toJson(citiesList)
+                                sharedPref.edit().putString(userid, json).apply()
+
+
+                                cities.removeAt(it)
+                                recCities.adapter?.notifyItemRemoved(it)
+
+                                showSnackbar("Ciudad eliminada de sus favoritos")
+                            }
+                            .setNegativeButton("Salir") { dialog, id ->
+                                dialog.dismiss()
+                            }
+                        val alert = builder.create()
+                        alert.show()
+                    }
+                )
                 for (city in cities) {
                     Log.d("lifecycleScope", city.name)
                 }
@@ -162,6 +188,11 @@ class CitiesDashboardFragment : Fragment() {
                 )
             findNavController().navigate(action)
         }
+    }
+
+    private fun showSnackbar(msg: String) {
+        snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_LONG)
+        snackbar.show()
     }
 
     private fun showProgressBar() {

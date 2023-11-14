@@ -1,5 +1,6 @@
 package com.example.application.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,7 @@ import com.example.application.adapters.CityAdapter
 import com.example.application.adapters.ForecastAdapter
 import com.example.application.entities.City
 import com.example.application.entities.ForecastResponse
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
@@ -44,6 +46,8 @@ class ForecastDashboardFragment : Fragment() {
     private lateinit var itemForecast: CardView
     private lateinit var progressBarFore: ProgressBar
     private lateinit var llFragForeDash: LinearLayout
+
+    private lateinit var snackbar: Snackbar
 
     private lateinit var viewModel: ForecastDashboardViewModel
 
@@ -69,7 +73,7 @@ class ForecastDashboardFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ForecastDashboardViewModel::class.java)
 
         val sharedPref: SharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val json = sharedPref.getString(userid, "")
+        var json = sharedPref.getString(userid, "")
 
         val citiesList : MutableList<String> = if (json.isNullOrEmpty()) {
             mutableListOf()
@@ -83,14 +87,37 @@ class ForecastDashboardFragment : Fragment() {
             if(citiesList.size > 0) {
                 val forecastsList = viewModel.getForecasts(citiesList)
                 adapter = ForecastAdapter(
-                    forecastsList
-                ) {
+                    forecastsList,
+                 {
                     val action =
                         ForecastDashboardFragmentDirections.actionForecastDashboardFragmentToForecastDetailFragment(
                             forecastsList[it]
                         )
                     findNavController().navigate(action)
-                }
+                } , {
+                        val builder = AlertDialog.Builder(context)
+                        builder.setMessage(forecastsList[it].location.name)
+                            .setCancelable(true)
+                            .setPositiveButton("Eliminar") { dialog, id ->
+                                //teamDao?.delete(cities[it]) // elimina de la bdd (shared preferences ahora)
+
+                                citiesList.removeAt(it)
+                                json = Gson().toJson(citiesList)
+                                sharedPref.edit().putString(userid, json).apply()
+
+
+                                forecastsList.removeAt(it)
+                                recForecast.adapter?.notifyItemRemoved(it)
+
+                                showSnackbar("Ciudad eliminada de sus favoritos")
+                            }
+                            .setNegativeButton("Salir") { dialog, id ->
+                                dialog.dismiss()
+                            }
+                        val alert = builder.create()
+                        alert.show()
+                    }
+                )
                 for (forecast in forecastsList) {
                     Log.d("lifecycleScope", forecast.location.name)
                 }
@@ -148,6 +175,11 @@ class ForecastDashboardFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+    }
+
+    private fun showSnackbar(msg: String) {
+        snackbar = Snackbar.make(v, msg, Snackbar.LENGTH_LONG)
+        snackbar.show()
     }
 
     private fun showProgressBar() {

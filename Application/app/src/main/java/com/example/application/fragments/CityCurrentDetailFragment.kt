@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
@@ -44,6 +46,9 @@ class CityCurrentDetailFragment : Fragment() {
     private lateinit var textViewLocalTime : TextView
     private lateinit var imageViewCurrent: ImageView
 
+    private lateinit var progressBarDetail: ProgressBar
+    private lateinit var llCityDetail: LinearLayout
+
     private lateinit var viewModel: CityCurrentDetailViewModel
 
     override fun onCreateView(
@@ -66,6 +71,9 @@ class CityCurrentDetailFragment : Fragment() {
         textViewLocalTime = v.findViewById(R.id.textViewLocalTime)
         imageViewCurrent = v.findViewById(R.id.imageViewCurrent)
 
+        progressBarDetail = v.findViewById(R.id.progressBarDetail)
+        llCityDetail = v.findViewById(R.id.llCityDetail)
+
         return v
     }
 
@@ -83,6 +91,7 @@ class CityCurrentDetailFragment : Fragment() {
         if(arg.localTime == 0) {
 
             lifecycleScope.launch {
+                showProgressBar()
                 Log.d("DETAIL", "arg.localTime == 0")
                 arg = viewModel.getCity(arg.name)
 
@@ -99,6 +108,7 @@ class CityCurrentDetailFragment : Fragment() {
                 textViewLastUpdate.text = "Actualizado: " + viewModel.unixToText(arg.lastUpdated.toLong(), "HH:mm", arg.tz)
                 textViewLocalTime.text = "Hora local: " + viewModel.unixToText(arg.localTime.toLong(), "HH:mm", arg.tz)
                 Glide.with(v).load("https:" + arg.conditionImgUrl.replace("64x64", "128x128")).into(imageViewCurrent)
+                hideProgressBar()
             }
         } else {
             Log.d("DETAIL", "else")
@@ -116,5 +126,15 @@ class CityCurrentDetailFragment : Fragment() {
             textViewLocalTime.text = "Hora local: " + viewModel.unixToText(arg.localTime.toLong(), "HH:mm", arg.tz)
             Glide.with(v).load("https:" + arg.conditionImgUrl.replace("64x64", "128x128")).into(imageViewCurrent)
         }
+    }
+
+    private fun showProgressBar() {
+        llCityDetail.visibility = View.GONE
+        progressBarDetail.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBarDetail.visibility = View.GONE
+        llCityDetail.visibility = View.VISIBLE
     }
 }
