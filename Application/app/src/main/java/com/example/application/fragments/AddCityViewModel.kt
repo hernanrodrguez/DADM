@@ -14,8 +14,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class AddCityViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 
-    val citiesList: MutableList<City> = mutableListOf()
-
     val currentHint = MutableLiveData<String>()
     var viewState : MutableLiveData<String> = MutableLiveData()
 
@@ -27,14 +25,15 @@ class AddCityViewModel : ViewModel() {
     }
 
     suspend fun searchCities(hint: String) : MutableList<City> {
-        searchHint(hint)
-        for (city in citiesList) {
-            Log.d("citiesList", city.name)
+        val retList = searchHint(hint)
+        for (city in retList) {
+            Log.d("retList", city.name)
         }
-        return citiesList
+        return retList
     }
 
-    private suspend fun searchHint(hint: String) {
+    private suspend fun searchHint(hint: String) : MutableList<City> {
+        val citiesList: MutableList<City> = mutableListOf()
         val call = getRetrofit().create(CurrentApi::class.java)
             .getSearch("search.json", "cf91e562d2444d5d8e303730231810", hint, "es")
         val rsp = call.body()
@@ -46,5 +45,6 @@ class AddCityViewModel : ViewModel() {
                 citiesList.add(city)
             }
         }
+        return citiesList
     }
 }
