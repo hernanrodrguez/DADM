@@ -8,8 +8,11 @@ import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.preference.PreferenceManager
@@ -38,6 +41,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var editTextPassword : EditText
     private lateinit var snackbar : Snackbar
 
+    private lateinit var progressBarLogin: ProgressBar
+    private lateinit var llLogin: LinearLayout
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -48,6 +55,10 @@ class LoginActivity : AppCompatActivity() {
         btnSignUp = findViewById(R.id.btnSignUp)
         editTextUsername = findViewById(R.id.editTextUsername)
         editTextPassword = findViewById(R.id.editTextPassword)
+
+        progressBarLogin = findViewById(R.id.progressBarLogin)
+        llLogin = findViewById(R.id.llLogin)
+
 
     }
 
@@ -66,8 +77,10 @@ class LoginActivity : AppCompatActivity() {
             } else if(editTextPassword.text.isEmpty()) {
                 showSnackbar("Ingrese su constraseña")
             } else if(editTextPassword.text.length < 6) {
+                editTextPassword.setText("")
                 showSnackbar("Contraseña invalida")
             } else if(editTextUsername.text.isNotEmpty() && editTextPassword.text.isNotEmpty()) {
+                showProgressBar()
                 signIn(editTextUsername.text.toString(), editTextPassword.text.toString())
             }
         }
@@ -79,7 +92,9 @@ class LoginActivity : AppCompatActivity() {
                 showSnackbar("Ingrese su constraseña")
             } else if(editTextPassword.text.length < 6) {
                 showSnackbar("Contraseña invalida")
+                editTextPassword.setText("")
             } else if(editTextUsername.text.isNotEmpty() && editTextPassword.text.isNotEmpty()) {
+                showProgressBar()
                 createAccount(editTextUsername.text.toString(), editTextPassword.text.toString())
             }
         }
@@ -94,6 +109,7 @@ class LoginActivity : AppCompatActivity() {
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
+                hideProgressBar()
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
@@ -151,10 +167,23 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 sendEmailVerification()
                 showSnackbar("Valide su correo y vuelva a ingresar")
+                editTextPassword.setText("")
+                hideProgressBar()
             }
         } else {
-
+            editTextPassword.setText("")
+            hideProgressBar()
         }
+    }
+
+    private fun showProgressBar() {
+        llLogin.visibility = View.GONE
+        progressBarLogin.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBarLogin.visibility = View.GONE
+        llLogin.visibility = View.VISIBLE
     }
 
     private fun reload() {

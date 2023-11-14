@@ -99,12 +99,9 @@ class ForecastDashboardFragment : Fragment() {
                         builder.setMessage(forecastsList[it].location.name)
                             .setCancelable(true)
                             .setPositiveButton("Eliminar") { dialog, id ->
-                                //teamDao?.delete(cities[it]) // elimina de la bdd (shared preferences ahora)
-
                                 citiesList.removeAt(it)
                                 json = Gson().toJson(citiesList)
                                 sharedPref.edit().putString(userid, json).apply()
-
 
                                 forecastsList.removeAt(it)
                                 recForecast.adapter?.notifyItemRemoved(it)
